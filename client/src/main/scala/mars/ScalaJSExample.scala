@@ -1,4 +1,4 @@
-package example
+package mars
 
 import scala.scalajs.js
 import org.scalajs.dom
