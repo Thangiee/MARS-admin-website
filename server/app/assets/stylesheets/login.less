@@ -1,0 +1,59 @@
+@import "bootstrap/less/mixins/grid.less";
+@import "bootstrap/less/mixins/grid-framework.less";
+
+#login-left {
+  .hidden-sm();
+  .hidden-xs();
+  .make-md-column(8);
+  position: absolute;
+  left: 0;
+  height: 100%;
+  background: url("http://crimeblog.dallasnews.com/files/2013/06/utarlington.jpg") no-repeat center center ;
+  background-size: cover;
+}
+
+#login-right {
+  .make-md-column(4);
+  .make-xs-column(12);
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: block;
+}
+
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+  #login-form {
+    //.make-xs-column(6);
+    //.make-xs-column-offset(3);
+    position: absolute;
+    top: 35%;
+
+    a {
+      float: right;
+    }
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+
+}

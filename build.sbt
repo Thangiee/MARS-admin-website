@@ -11,6 +11,7 @@ lazy val server = (project in file("server")).settings(
   libraryDependencies ++= Seq(
     "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
     "org.webjars" % "jquery" % "1.11.1",
+    "org.webjars" % "bootstrap" % "3.3.4",
     specs2 % Test
   ),
   // Heroku specific
