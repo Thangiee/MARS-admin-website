@@ -1,59 +1,41 @@
-@import "bootstrap/less/mixins/grid.less";
-@import "bootstrap/less/mixins/grid-framework.less";
+@import "bootstrap/less/mixins/grid";
+@import "bootstrap/less/variables";
+@import "helper";
 
-#login-left {
-  .hidden-sm();
-  .hidden-xs();
-  .make-md-column(8);
-  position: absolute;
-  left: 0;
-  height: 100%;
-  background: url("http://crimeblog.dallasnews.com/files/2013/06/utarlington.jpg") no-repeat center center ;
-  background-size: cover;
-}
+.tablets-and-up({
+  #login-left {
+    .make-sm-column(6);
+    .make-md-column(9);
+    position: absolute;
+    left: 0;
+    height: 100%;
+    background: url(http://s30.postimg.org/pjl35o0ip/uta.jpg) no-repeat center center ;
+    background-size: cover;
+  }
+});
 
 #login-right {
-  .make-md-column(4);
   .make-xs-column(12);
+  .make-sm-column(6);
+  .make-md-column(3);
   position: absolute;
   right: 0;
   height: 100%;
   display: block;
-}
 
-
-/*==========  Non-Mobile First Method  ==========*/
-
-/* Large Devices, Wide Screens */
-@media only screen and (max-width : 1200px) {
   #login-form {
-    //.make-xs-column(6);
-    //.make-xs-column-offset(3);
+    .make-xs-column(8);
+    .make-xs-column-offset(2);
+    .make-md-column(8);
+    .make-md-column-offset(2);
     position: absolute;
-    top: 35%;
+
+    top: 25%;
+    .desktop-and-up({ top: 35%; });
 
     a {
       float: right;
     }
   }
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
-
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width : 768px) {
-
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width : 480px) {
-
-}
-
-/* Custom, iPhone Retina */
-@media only screen and (max-width : 320px) {
 
 }
