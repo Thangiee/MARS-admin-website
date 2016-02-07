@@ -1,10 +1,13 @@
-.form-horizontal .checkbox {
-  padding-top: 20px;
+// http://www.google.com/design/spec/components/selection-controls.html#selection-controls-checkbox
+.form-group {
 }
+
 .checkbox {
   label {
     cursor: pointer;
     padding-left: 0; // Reset for Bootstrap rule
+    color: @mdb-checkbox-label-color;
+    .mdb-label-color-toggle-focus();
   }
 
   // Hide native checkbox
@@ -24,14 +27,14 @@
     vertical-align: middle;
     position: relative;
     top: 3px;
-    &:before {
+    &:before {  // FIXME: document why this is necessary (doesn't seem to be on chrome)
       display: block;
       position: absolute;
       left: 0;
       content: "";
       background-color: rgba(0,0,0,.84);
-      height: @checkbox-size;
-      width: @checkbox-size;
+      height: @mdb-checkbox-size;
+      width: @mdb-checkbox-size;
       border-radius: 100%;
       z-index: 1;
       opacity: 0;
@@ -42,10 +45,9 @@
     .check {
       position: relative;
       display: inline-block;
-      width: @checkbox-size;
-      height: @checkbox-size;
-      border: 2px solid;
-      border-radius: 2px;
+      width: @mdb-checkbox-size;
+      height: @mdb-checkbox-size;
+      border: @border-radius-base solid @mdb-checkbox-border-color;
       overflow: hidden;
       z-index: 1;
     }
@@ -66,61 +68,77 @@
         0 0 0 0,
         0 0 0 0,
         0 0 0 0 inset;
-      animation: checkbox-off @checkbox-animation-check forwards;
+      animation: checkbox-off @mdb-checkbox-animation-check forwards;
     }
   }
 
-  input[type=checkbox]:focus + .checkbox-material .check:after {
-    opacity: 0.2;
-  }
-  input[type=checkbox]:checked + .checkbox-material .check:before {
-    box-shadow:
-      0 0 0 10px,
-      10px -10px 0 10px,
-      32px 0px 0 20px,
-      0px 32px 0 20px,
-      -5px 5px 0 10px,
-      20px -12px 0 11px;
-    animation: checkbox-on @checkbox-animation-check forwards;
-  }
+  input[type=checkbox] {
 
-  input[type=checkbox]:not(:checked) + .checkbox-material:before {
-    animation: rippleOff @checkbox-animation-ripple;
-  }
-  input[type=checkbox]:checked + .checkbox-material:before {
-    animation: rippleOn @checkbox-animation-ripple;
-  }
+    &:focus + .checkbox-material .check:after {
+      opacity: 0.2;
+    }
 
-  // Ripple effect on click
-  input[type=checkbox]:not(:checked) + .checkbox-material .check:after {
-    animation: rippleOff @checkbox-animation-ripple forwards;
-  }
-  input[type=checkbox]:checked + .checkbox-material .check:after {
-    animation: rippleOn @checkbox-animation-ripple forwards;
+    &:checked {
+
+      // FIXME: once working - combine further to reduce code
+      & + .checkbox-material .check {
+        color: @mdb-checkbox-checked-color;
+        border-color: @mdb-checkbox-checked-color;
+      }
+
+      & + .checkbox-material .check:before {
+        color: @mdb-checkbox-checked-color;
+        box-shadow: 0 0 0 10px,
+          10px -10px 0 10px,
+        32px 0 0 20px,
+        0px 32px 0 20px,
+        -5px 5px 0 10px,
+          20px -12px 0 11px;
+        animation: checkbox-on @mdb-checkbox-animation-check forwards;
+      }
+
+      & + .checkbox-material:before {
+        animation: rippleOn @mdb-checkbox-animation-ripple;
+      }
+
+      & + .checkbox-material .check:after {
+        //background-color: @brand-success; // FIXME: seems like tho wrong color, test and make sure it can be removed
+        animation: rippleOn @mdb-checkbox-animation-ripple forwards; // Ripple effect on check
+      }
+    }
+
+    &:not(:checked) {
+      & + .checkbox-material:before {
+        animation: rippleOff @mdb-checkbox-animation-ripple;
+      }
+
+      & + .checkbox-material .check:after {
+        animation: rippleOff @mdb-checkbox-animation-ripple forwards; // Ripple effect on uncheck
+
+      }
+    }
   }
 
   // Style for disabled inputs
+  fieldset[disabled] &,
+  fieldset[disabled] & input[type=checkbox],
   input[type=checkbox][disabled]:not(:checked) ~ .checkbox-material .check:before,
+  input[type=checkbox][disabled]:not(:checked) ~ .checkbox-material .check,
   input[type=checkbox][disabled] + .circle {
     opacity: 0.5;
   }
   input[type=checkbox][disabled] + .checkbox-material .check:after {
-    background-color: @lightbg-text;
+    background-color: @mdb-text-color-primary;
     transform: rotate(-45deg);
   }
-
-  .variations(~" input[type=checkbox]:checked + .checkbox-material .check:after", background-color, @success);
-  .variations(~" input[type=checkbox]:checked + .checkbox-material .check:before", color, #4caf50);
-  .variations(~" input[type=checkbox]:checked + .checkbox-material .check", color, #4caf50);
 }
-
 
 @keyframes checkbox-on {
   0% {
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       15px 2px 0 11px;
@@ -129,7 +147,7 @@
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       20px 2px 0 11px;
@@ -138,7 +156,7 @@
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       20px -12px 0 11px;
@@ -149,7 +167,7 @@
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       20px -12px 0 11px,
@@ -160,7 +178,7 @@
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       20px -12px 0 11px,
@@ -170,12 +188,12 @@
     transform: rotate(45deg);
     margin-top: -4px;
     margin-left: 6px;
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     box-shadow:
       0 0 0 10px,
       10px -10px 0 10px,
-      32px 0px 0 20px,
+      32px 0 0 20px,
       0px 32px 0 20px,
       -5px 5px 0 10px,
       15px 2px 0 11px,
@@ -194,7 +212,7 @@
       0 0 0 0,
       0 0 0 0,
       0 0 0 0,
-      0px 0px 0 10px inset;
+      0px 0 0 10px inset;
   }
   100% {
     transform: rotate(0deg);
@@ -209,7 +227,7 @@
       0 0 0 0,
       0 0 0 0,
       0 0 0 0,
-      0px 0px 0 0px inset;
+      0px 0 0 0 inset;
   }
 }
 @keyframes rippleOn {

@@ -19,25 +19,25 @@
         &:after {
             right: 5px;
             position: absolute;
-            font-size: 7px;
-            content: "\e894";
-            font-family: "Material-Design-Icons";
+            font-size: 25px;
+            content: "\e5c5";
+            font-family: 'Material Icons';
             speak: none;
             font-style: normal;
             font-weight: normal;
             font-variant: normal;
             text-transform: none;
-            line-height: 4;
+            line-height: 1;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         input {
             font-size: 14px;
-            outline: 0px;
-            border: 0px;
+            outline: 0;
+            border: 0;
             background: transparent;
         }
-        &.floating-label-fix input {
+        &.label-floating-fix input {
             opacity: 0;
         }
         > div, > .item {
@@ -68,7 +68,7 @@
         height: auto;
         background-color: #FFF;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-        border-radius: 2px;
+        border-radius: @border-radius-base;
         padding: 0;
         margin-top: 3px;
         .active {
