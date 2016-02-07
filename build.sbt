@@ -9,9 +9,9 @@ lazy val server = (project in file("server")).settings(
   pipelineStages := Seq(scalaJSProd, gzip),
   resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
   libraryDependencies ++= Seq(
-    "com.vmunier" %% "play-scalajs-scripts" % "0.3.0",
-    "org.webjars" % "jquery" % "1.11.1",
-    "org.webjars" % "bootstrap" % "3.3.4",
+    "com.vmunier" %% "play-scalajs-scripts" % "0.4.0",
+    "org.webjars" % "jquery" % "2.2.0",
+    "org.webjars" % "bootstrap" % "3.3.6",
     specs2 % Test
   ),
   // Heroku specific
@@ -26,7 +26,7 @@ lazy val client = (project in file("client")).settings(
   persistLauncher := true,
   persistLauncher in Test := false,
   libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.8.0"
+    "org.scala-js" %%% "scalajs-dom" % "0.8.2"
   )
 ).enablePlugins(ScalaJSPlugin, ScalaJSPlay).
   dependsOn(sharedJs)
