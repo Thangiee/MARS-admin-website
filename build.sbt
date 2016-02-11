@@ -12,6 +12,7 @@ lazy val server = (project in file("server")).settings(
     "com.vmunier" %% "play-scalajs-scripts" % "0.4.0",
     "org.webjars" % "jquery" % "2.2.0",
     "org.webjars" % "bootstrap" % "3.3.6",
+    "org.webjars" % "jquery-validation" % "1.14.0-1",
     specs2 % Test
   ),
   // Heroku specific

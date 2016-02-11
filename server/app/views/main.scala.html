@@ -29,6 +29,9 @@
         @content
         @playscalajs.html.scripts("client")
 
+        <script src="@routes.Assets.at("lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("lib/jquery-validation/additional-methods.min.js")" type="text/javascript"></script>
+
             <!-- Twitter Bootstrap -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -40,7 +43,6 @@
                     $.material.init();
                 });
         </script>
-
             <!-- Sliders -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
 
