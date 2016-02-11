@@ -1,0 +1,14 @@
+@(field: play.api.data.Field, args: (Symbol,Any)*)(implicit msg: Messages)
+
+@import play.api.i18n._
+@import views.html.helper._
+
+@elem = @{ new FieldElements(field.id, field, null, args.toMap, msg) }
+
+<div class="form-group label-floating @if(elem.hasErrors) {has-error}">
+    <label class="control-label" for="@elem.id">@elem.args.get('_label)</label>
+    <input class="form-control" name="@elem.id" id="@elem.id" type="@elem.args.getOrElse('type, "text")">
+    @if(elem.hasErrors) {
+        <em id="@elem.id-err" class="help-block text-danger">@elem.errors.mkString(", ")</em>
+    }
+</div>
