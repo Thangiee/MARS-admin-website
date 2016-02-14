@@ -1,5 +1,6 @@
 @import "bootstrap/less/mixins/grid";
 @import "bootstrap/less/variables";
+@import "material/bootstrap-material-design";
 @import "helper";
 
 .tablets-and-up({
@@ -39,4 +40,17 @@
     }
   }
 
+  #login-snackbar-container {
+    .make-xs-column(8);
+    .make-xs-column-offset(2);
+    .make-md-column(8);
+    .make-md-column-offset(2);
+    position: absolute;
+
+    bottom: 8%;
+
+    span {
+      color: @red-500;
+    }
+  }
 }

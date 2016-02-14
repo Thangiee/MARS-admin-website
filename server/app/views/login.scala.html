@@ -1,6 +1,8 @@
 @import views.html.materials.matInput
 @(loginForm: Form[Tuple2[String, String]])(implicit msg: Messages)
 
+@loginErr = @{ loginForm("auth-err").errors.map(_.messages.mkString(", ")).mkString(", ") }
+
 @main("M.A.R.S.") {
     <div id="login-left"></div>
     <div id="login-right">
@@ -9,7 +11,7 @@
             <p>Mavs Assistant Reporting System</p>
 
             <br/>
-            @helper.form(action = routes.Application.auth(), 'id -> "login-form") {
+            @helper.form(action = routes.Login.auth(), 'id -> "login-form") {
                 <fieldset>
                     @matInput(loginForm("login-user"), '_label -> "Username")
                     @matInput(loginForm("login-passwd"), '_label -> "Password", 'type -> "password")
@@ -21,7 +23,21 @@
                 </fieldset>
             }
         </div>
+        <div id="login-snackbar-container"></div>
     </div>
 
+    @if(loginErr.nonEmpty) {
+        <script>
+            @* show server side login error *@
+            $(document).ready(function($) {
+                $.snackbar({
+                    content: "@loginErr",
+                    timeout: 5000
+                }).appendTo("#login-snackbar-container")
+            });
+        </script>
+    }
+
     <script src="@routes.Assets.at("js/login.js")"></script>
+
 }
