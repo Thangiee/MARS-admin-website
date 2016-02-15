@@ -8,10 +8,10 @@
 @inputType = @{ elem.args.getOrElse('type, "text") }
 @value     = @{ if(inputType != "password") elem.field.value.getOrElse("") else "" }
 
-<div class="form-group label-floating">
-    <label class="control-label" for="@elem.id">@elem.args.get('_label)</label>
-    <input class="form-control @{if(hasErr) "text-danger"}" name="@elem.id" id="@elem.id" type="@inputType" value="@value">
+<div class="input-field">
+    <label class="Placeholder" for="@elem.id">@elem.args.get('_label)</label>
+    <input class="validate" name="@elem.id" id="@elem.id" type="@inputType" value="@value">
     @if(hasErr) {
-        <em id="@elem.id-err" class="text-danger">@elem.errors.mkString(", ")</em>
+        <em id="@elem.id-err" class="red-text">@elem.errors.mkString(", ")</em>
     }
 </div>

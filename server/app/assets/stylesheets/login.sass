@@ -1,0 +1,38 @@
+@import "../sass/materialize"
+
+#login-left
+  position: absolute
+  left: 0
+  height: 100%
+  @media #{$medium-and-up}
+    background:
+      image: url(http://s30.postimg.org/pjl35o0ip/uta.jpg)
+      repeat: no-repeat
+      position: center center
+  background-size: cover
+
+#login-right
+  position: absolute
+  right: 0
+  height: 100%
+  display: block
+
+  #login-form-container
+    position: absolute
+    top: 25%
+    @media #{$large-and-up}
+      top: 30%
+
+    .input-field
+      margin-top: 8%
+
+    button
+      margin-top: 12%
+      float: right
+
+
+  #login-snackbar-container
+    position: absolute
+    bottom: 8%
+    span
+      color: color("red", "base")

@@ -1,43 +1,46 @@
 @import views.html.materials.matInput
 @(loginForm: Form[Tuple2[String, String]])(implicit msg: Messages)
 
-@loginErr = @{ loginForm("auth-err").errors.map(_.messages.mkString(", ")).mkString(", ") }
+@loginErr = @{
+  loginForm("auth-err").errors.map(_.messages.mkString(", ")).mkString(", ")
+}
 
 @main("M.A.R.S.") {
-    <div id="login-left"></div>
-    <div id="login-right">
-        <div id="login-form-container">
-            <h1 class="text-primary">Welcome!</h1>
-            <p>Mavs Assistant Reporting System</p>
+  <div class="row">
+    <div id="login-left" class="col s0 m6 l9"></div>
+    <div id="login-right" class="col s12 m6 l3">
+      <div id="login-form-container" class="col s8 offset-s2">
+        <h3 class="blue-text">Welcome!</h3>
+        <span>Mavs Assistant Reporting System</span>
 
-            <br/>
-            @helper.form(action = routes.Login.auth(), 'id -> "login-form") {
-                <fieldset>
-                    @matInput(loginForm("login-user"), '_label -> "Username")
-                    @matInput(loginForm("login-passwd"), '_label -> "Password", 'type -> "password")
+        <br/>
+        @helper.form(action = routes.Login.auth(), 'id -> "login-form") {
+          @matInput(loginForm("login-user"), '_label -> "Username")
+          @matInput(loginForm("login-passwd"), '_label -> "Password", 'type -> "password")
 
-                    <div class="form-group">
-                        <button id="login" class="btn btn-primary btn-raised" type="submit">Login</button>
-                        <button class="btn btn-info">Sign up</button>
-                    </div>
-                </fieldset>
-            }
-        </div>
-        <div id="login-snackbar-container"></div>
+          <div class="form-group">
+            <button id="login" class="waves-effect waves-light btn blue" type="submit">Login</button>
+            <button id="sign-up" class="waves-effect waves-dark btn-flat white">Sign up</button>
+          </div>
+        }
+      </div>
+
+      <div id="login-snackbar-container" class="col s8 offset-s2"></div>
     </div>
+  </div>
 
-    @if(loginErr.nonEmpty) {
-        <script>
-            @* show server side login error *@
-            $(document).ready(function($) {
-                $.snackbar({
-                    content: "@loginErr",
-                    timeout: 5000
-                }).appendTo("#login-snackbar-container")
-            });
-        </script>
-    }
+  @if(loginErr.nonEmpty) {
+    <script>
+    @* show server side login error *@
+    $(document).ready(function($) {
+      $.snackbar({
+        content: "@loginErr",
+        timeout: 5000
+      }).appendTo("#login-snackbar-container")
+    });
+    </script>
+  }
 
-    <script src="@routes.Assets.at("js/login.js")"></script>
+  <script src="@routes.Assets.at("js/login.js")"></script>
 
 }

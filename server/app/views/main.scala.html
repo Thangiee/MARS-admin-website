@@ -3,58 +3,29 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>@title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>@title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-            <!-- Material Design fonts -->
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-            <!-- Bootstrap -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+      <!-- core CSS of SnackbarJS -->
+    <link href="@routes.Assets.at("css/snackbar.min.css")" rel=stylesheet>
+    <link href="@routes.Assets.at("css/mat-snackbar.css")" rel=stylesheet>
 
-            <!-- Bootstrap Material Design -->
-        <link href="@routes.Assets.at("css/bootstrap-material-design.css")" rel="stylesheet">
-        <link href="@routes.Assets.at("css/ripples.min.css")" rel="stylesheet">
+    <link href="@routes.Assets.at("stylesheets/main.min.css")" type="text/css" rel="stylesheet" media="screen,projection" >
+    <link href="@routes.Assets.at("images/logo.png")" rel="shortcut icon" type="image/png">
+    <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("js/materialize.min.js")" type="text/javascript" ></script>
+  </head>
+  <body>
+    <script src="@routes.Assets.at("js/snackbar.min.js")"></script>
 
-            <!-- Dropdown.js -->
-        <link href="//cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.css" rel="stylesheet">
+    @content
+    @playscalajs.html.scripts("client")
 
-            <!-- core CSS of SnackbarJS -->
-        <link href="@routes.Assets.at("css/snackbar.min.css")" rel=stylesheet>
-
-        <link href="@routes.Assets.at("stylesheets/main.css")" rel="stylesheet" >
-        <link href="@routes.Assets.at("images/logo.png")" rel="shortcut icon" type="image/png">
-        <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" type="text/javascript"></script>
-    </head>
-    <body>
-        <script src="@routes.Assets.at("js/snackbar.min.js")"></script>
-
-        @content
-        @playscalajs.html.scripts("client")
-
-        <script src="@routes.Assets.at("lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("lib/jquery-validation/additional-methods.min.js")" type="text/javascript"></script>
-
-            <!-- Twitter Bootstrap -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-        <script src="@routes.Assets.at("js/ripples.min.js")"></script>
-        <script src="@routes.Assets.at("js/material.min.js")"></script>
-        <script>
-                $(document).ready(function() {
-                    // This command is used to initialize some elements and make them work properly
-                    $.material.init();
-                });
-        </script>
-            <!-- Sliders -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/noUiSlider/6.2.0/jquery.nouislider.min.js"></script>
-
-            <!-- Dropdown.js -->
-        <script src="https://cdn.rawgit.com/FezVrasta/dropdown.js/master/jquery.dropdown.js"></script>
-        <script>
-                $("#dropdown-menu select").dropdown();
-        </script>
-    </body>
+    <script src="@routes.Assets.at("lib/jquery-validation/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.at("lib/jquery-validation/additional-methods.min.js")" type="text/javascript"></script>
+  </body>
 </html>

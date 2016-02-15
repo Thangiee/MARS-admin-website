@@ -11,6 +11,6 @@ $(document).ready(function () {
             }
         },
         errorElement: "em",
-        errorClass: "text-danger"
+        errorClass: "red-text"
     })
 });
