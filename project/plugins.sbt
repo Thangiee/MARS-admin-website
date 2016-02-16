@@ -18,6 +18,4 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0")
 
 addSbtPlugin("com.heroku" % "sbt-heroku" % "0.5.3.1")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-less" % "1.1.1")
-
 addSbtPlugin("org.madoushi.sbt" % "sbt-sass" % "0.9.3")
