@@ -9,12 +9,14 @@
 
       <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="@routes.Assets.at("css/good-time-font.css")" type="text/css" charset="utf-8" />
 
       <!-- core CSS of SnackbarJS -->
     <link href="@routes.Assets.at("css/snackbar.min.css")" rel=stylesheet>
     <link href="@routes.Assets.at("css/mat-snackbar.css")" rel=stylesheet>
 
-    <link href="@routes.Assets.at("stylesheets/main.min.css")" type="text/css" rel="stylesheet" media="screen,projection" >
+    <link href="@routes.Assets.at("sass/materialize.min.css")" type="text/css" rel="stylesheet" media="screen,projection" >
+    <link href="@routes.Assets.at("stylesheets/overrides.min.css")" type="text/css" rel="stylesheet" media="screen,projection" >
     @for(sheet <- stylesheets) {
       <link href="@routes.Assets.at("stylesheets/"+sheet)" rel=stylesheet>
     }

@@ -1,0 +1,70 @@
+@import "../sass/components/color"
+@import "../sass/components/variables"
+@import "main"
+
+body
+  padding-left: 320px
+
+@media #{$medium-and-down}
+  body
+    padding-left: 0
+
+.side-nav
+  width: 320px
+
+h4
+  color: color("orange", "darken-2")
+  font-family: good-times, Arial, sans-serif
+
+#nav-logo-container
+  position: relative
+
+  #name-field
+    position: absolute
+    max-width: 320px
+    left: 30%
+    top: 28%
+
+    @media #{$medium-and-down}
+      top: 14%
+
+  #email-field
+    position: absolute
+    max-width: 220px
+    left: 30%
+    top: 44%
+
+    @media #{$medium-and-down}
+      top: 28%
+
+  #nav-logo
+    position: absolute
+    left: 8%
+    top: 20%
+    width: 18%
+    height: auto
+
+#slide-out
+  background-color: $dark-lighten-1
+
+  .btn-flat
+    background-color: $dark-lighten-1
+
+  li
+    background-color: $dark-lighten-1
+    a
+      color: white
+
+  li:hover
+    a
+      color: $primary-color-light
+
+  li.active
+    color: $primary-color-light
+    background-color: $dark-lighten-2
+    border-left: 4px solid $primary-color
+    padding-left: 11px
+    a
+      color: $primary-color-light
+      background: $dark-lighten-2
+

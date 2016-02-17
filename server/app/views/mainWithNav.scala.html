@@ -1,0 +1,8 @@
+@(title: String, acc: Account, inst: Instructor, stylesheets: String*)(content: Html)(implicit msg: Messages)
+
+@main(title, Seq("nav.min.css") ++ stylesheets: _*) {
+
+  @navigation(acc, inst)
+
+  @content
+}
