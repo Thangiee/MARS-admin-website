@@ -20,6 +20,7 @@ package object models {
   protected[models] def POST(route: String) = Http(baseUrl + route).timeout(10000, 10000).method("POST")
   protected[models] def GET(route: String)  = Http(baseUrl + route).timeout(10000, 10000).method("GET")
 
+  // todo: need caching?
   protected[models] def call(request: HttpRequest)(implicit req: Request, ex: ExecutionContext): XorF[Error, JsValue] = {
     XorT(Future {
       val authnCookies = Try(HttpCookie.parse(req.session.get("authn_cookies").getOrElse("")).toList).getOrElse(Nil)
