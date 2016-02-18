@@ -2,6 +2,11 @@
 @import "../sass/components/variables"
 @import "main"
 
+$dark-base: #212121
+$dark-lighten-1: #303030
+$dark-lighten-2: #424242
+$white: #ffffff
+
 body
   padding-left: 320px
 
@@ -11,10 +16,6 @@ body
 
 .side-nav
   width: 320px
-
-h4
-  color: color("orange", "darken-2")
-  font-family: good-times, Arial, sans-serif
 
 #nav-logo-container
   position: relative
@@ -46,6 +47,12 @@ h4
 
 #slide-out
   background-color: $dark-lighten-1
+  span
+    color: $white
+
+  h4
+    color: color("orange", "darken-2")
+    font-family: good-times, Arial, sans-serif
 
   .btn-flat
     background-color: $dark-lighten-1
