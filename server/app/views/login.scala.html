@@ -29,18 +29,32 @@
     </div>
   </div>
 
-  @if(loginErr.nonEmpty) {
-    <script>
-    @* show server side login error *@
-    $(document).ready(function($) {
-      $.snackbar({
-        content: "@loginErr",
-        timeout: 5000
-      }).appendTo("#login-snackbar-container")
+  <script>
+    // show server side login error
+    @if(loginErr.nonEmpty) {
+      $(document).ready(function($) {
+        $.snackbar({
+          content: "@loginErr",
+          timeout: 5000
+        }).appendTo("#login-snackbar-container")
+      });
+    }
+
+    // validate username and password login form fields
+    $(document).ready(function () {
+      $('#login-form').validate({
+        rules: {
+          'login-user': {
+            required: true,
+            nowhitespace: true
+          },
+          'login-passwd': {
+            required: true
+          }
+        },
+        errorElement: "em",
+        errorClass: "red-text"
+      })
     });
-    </script>
-  }
-
-  <script src="@routes.Assets.at("js/login.js")"></script>
-
+  </script>
 }
