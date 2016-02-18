@@ -1,0 +1,55 @@
+@(acc: Account, inst: Instructor)(implicit msg: Messages)
+
+@mainWithNav("Assistants", acc, inst, "stylesheets/assistants.css") {
+  <nav id="toolbar">
+  @normalToolbar
+  </nav>
+
+  <div class="container">
+    <div class="collection">
+      <a href="#!" class="collection-item avatar">
+        <i class="material-icons circle red">play_arrow</i>
+        <span class="title">Title</span>
+        <p>First Line <br>
+          Second Line
+        </p>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    $(document).on('click', 'a#search-icon',function() {
+      $("#toolbar").addClass("white");
+      $("#normal-tb").replaceWith(`@searchToolbar`);
+      $("#search").focus();
+    });
+
+    $(document).on('click', 'a#close-icon',function() {
+      $("#toolbar").removeClass("white");
+      $("#search-tb").replaceWith(`@normalToolbar`)
+    });
+
+    $(document).ready(function(){
+      $("#toolbar").sticky({topSpacing:0});
+    });
+  </script>
+}
+
+
+@normalToolbar = {
+  <div id="normal-tb" class="nav-wrapper">
+    <a href="#!" class="breadcrumb">Assistants</a>
+    <ul class="right">
+      <li><a id="search-icon" href="#"><i class="material-icons">search</i></a></li>
+    </ul>
+  </div>
+}
+
+@searchToolbar = {
+  <div id="search-tb" class="nav-wrapper container row">
+    <div class="input-field col s11">
+      <input placeholder="Search" id="search" class="no-padding" type="text">
+    </div>
+    <a id="close-icon" class="col s1 no-padding" href="#"><i class="material-icons">close</i></a>
+  </div>
+}
