@@ -11,5 +11,7 @@ POST        /login/auth          controllers.Login.auth
 
 GET         /home                controllers.Home.page
 
+GET         /assistants          controllers.Assistants.page
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)

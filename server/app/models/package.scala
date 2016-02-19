@@ -3,6 +3,7 @@ import java.net.HttpCookie
 import cats.data.{Xor, XorT}
 import play.api.libs.json._
 import play.api.mvc.AnyContent
+import play.api.mvc.Results.Status
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -14,7 +15,9 @@ package object models {
   type XorF[L, R] = XorT[Future, L, R]
   type Request = play.api.mvc.Request[AnyContent]
 
-  case class Error(code: Int, msg: String)
+  case class Error(code: Int, msg: String) {
+    def toResponse = Status(code)(msg)
+  }
 
   protected[models] val baseUrl = "http://52.33.35.165:8080/api"
   protected[models] def POST(route: String) = Http(baseUrl + route).timeout(10000, 10000).method("POST")
