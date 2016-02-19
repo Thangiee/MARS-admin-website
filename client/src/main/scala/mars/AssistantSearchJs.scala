@@ -28,8 +28,8 @@ object AssistantSearchJS {
       s"${asst.fullName} ${asst.netId}".toLowerCase -> {
         a(`class`:="collection-item avatar",
           img(`class`:="profile circle", data("name"):=initials(asst.fullName)),
-          span(`class`:="title", s"${asst.fullName}"),
-          p(asst.email, br, "Job: "+asst.job)
+          span(`class`:="title grey-text text-darken-3", s"${asst.fullName}"),
+          p(`class`:="grey-text text-darken-3", asst.email, br, "Job: "+asst.job)
         )
       }
     ).toMap
