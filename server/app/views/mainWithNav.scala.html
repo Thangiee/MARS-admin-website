@@ -1,8 +1,8 @@
-@(title: String, acc: Account, inst: Instructor, stylesheets: String*)(content: Html)(implicit msg: Messages)
+@(title: String, acc: Account, inst: Instructor, currentMenu: String, stylesheets: String*)(content: Html)(implicit msg: Messages)
 
 @main(title, Seq("sass/nav.min.css") ++ stylesheets: _*) {
 
-  @navigation(acc, inst)
+  @navigation(acc, inst, currentMenu)
 
   @content
 }

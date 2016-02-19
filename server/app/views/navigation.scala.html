@@ -1,22 +1,22 @@
-@(acc: Account, inst: Instructor)(implicit msg: Messages)
+@(acc: Account, inst: Instructor, currentMenu: String)(implicit msg: Messages)
 
 @instMenuItems = @{
   Seq(
-    ("Dashboard", "dashboard"),
-    ("Assistants", "face"),
-    ("Settings", "settings"),
-    ("Logout", "exit_to_app")
+    ("Dashboard", "dashboard", routes.Home.page()),
+    ("Assistants", "face"), routes.Assistants.page(),
+    ("Settings", "settings"), routes.Application.index(),
+    ("Logout", "exit_to_app", routes.Application.index())
   )
 }
 
 @adminMenuItems = @{
   Seq(
-    ("Dashboard", "dashboard"),
-    ("Assistants", "face"),
-    ("Accounts mngt.", "account_circle"),
-    ("Approval", "check_circle"),
-    ("Settings", "settings"),
-    ("Logout", "exit_to_app")
+    ("Dashboard", "dashboard", routes.Home.page()),
+    ("Assistants", "face", routes.Assistants.page()),
+    ("Accounts mngt.", "account_circle", routes.Application.index()),
+    ("Approval", "check_circle", routes.Application.index()),
+    ("Settings", "settings", routes.Application.index()),
+    ("Logout", "exit_to_app", routes.Application.index())
   )
 }
 
@@ -35,9 +35,9 @@
     <img class="responsive-img" src="@routes.Assets.at("/images/material-bg.png")">
   </div>
 
-  @for((title, icon) <- menuItems) {
-    <li id="menu-item-container" class="no-padding">
-      <a id="menu-item" href="#" class="waves-effect waves-orange btn-flat">
+  @for((title, icon, route) <- menuItems) {
+    <li id="menu-item-container" class="no-padding @if(title == currentMenu) { active }">
+      <a id="menu-item" href="@route" class="waves-effect waves-orange btn-flat">
         <i class="material-icons left">@icon</i>
         @title
       </a>

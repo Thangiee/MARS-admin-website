@@ -1,6 +1,6 @@
 @(acc: Account, inst: Instructor, asstsJson: String)(implicit msg: Messages)
 
-@mainWithNav("Assistants", acc, inst, "sass/assistants.min.css") {
+@mainWithNav("Assistants", acc, inst, "Assistants", "sass/assistants.min.css") {
 
   @* store assistants JSON data for client *@
   <div id="data" data-assts='@asstsJson'></div>
