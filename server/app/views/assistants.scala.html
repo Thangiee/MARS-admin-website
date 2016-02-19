@@ -1,31 +1,31 @@
-@(acc: Account, inst: Instructor)(implicit msg: Messages)
+@(acc: Account, inst: Instructor, asstsJson: String)(implicit msg: Messages)
 
 @mainWithNav("Assistants", acc, inst, "sass/assistants.min.css") {
+
+  @* store assistants JSON data for client *@
+  <div id="data" data-assts='@asstsJson'></div>
+
   <nav id="toolbar">
   @normalToolbar
   </nav>
 
   <div class="container">
-    <div class="collection">
-      <a href="#!" class="collection-item avatar">
-        <i class="material-icons circle red">play_arrow</i>
-        <span class="title">Title</span>
-        <p>First Line <br>
-          Second Line
-        </p>
-      </a>
+    <div id="assts-list" class="collection">
+      @* render assistants line item using js and the data above *@
     </div>
   </div>
+
 
   <script>
     $(document).on('click', 'a#search-icon',function() {
       $("#toolbar").addClass("white");
       $("#normal-tb").replaceWith(`@searchToolbar`);
-      $("#search").focus();
+      $("input[name=asst-search]").focus();
     });
 
     $(document).on('click', 'a#close-icon',function() {
       $("#toolbar").removeClass("white");
+      $("input[name=asst-search]").val("").trigger({type: 'keyup'});
       $("#search-tb").replaceWith(`@normalToolbar`)
     });
 
@@ -48,7 +48,7 @@
 @searchToolbar = {
   <div id="search-tb" class="nav-wrapper container row">
     <div class="input-field col s11">
-      <input placeholder="Search" id="search" class="no-padding" type="text">
+      <input placeholder="Search by name or net id" name="asst-search" class="no-padding" type="text">
     </div>
     <a id="close-icon" class="col s1 no-padding" href="#"><i class="material-icons">close</i></a>
   </div>
