@@ -1,8 +1,9 @@
-@(title: String, acc: Account, inst: Instructor, currentMenu: String, stylesheets: String*)(content: Html)(implicit msg: Messages)
+@import models.Request
+@(title: String, currentMenu: String, stylesheets: String*)(content: Html)(implicit req: Request, msg: Messages)
 
 @main(title, Seq("sass/nav.min.css") ++ stylesheets: _*) {
 
-  @navigation(acc, inst, currentMenu)
+  @navigation(currentMenu)
 
   @content
 }

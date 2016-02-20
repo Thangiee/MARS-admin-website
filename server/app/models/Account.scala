@@ -26,5 +26,4 @@ object Account {
 
   def current()(implicit req: Request, ex: ExecutionContext): XorF[Error, Account] =
     call(GET("/account")).map(_.as[Account])
-
 }

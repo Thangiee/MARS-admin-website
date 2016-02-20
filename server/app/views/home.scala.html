@@ -1,5 +1,6 @@
-@(acc: Account, inst: Instructor)(implicit msg: Messages)
+@import models.Request
+@()(implicit req: Request, msg: Messages)
 
-@mainWithNav("Home", acc, inst, "Dashboard") {
+@mainWithNav("Home", "Dashboard") {
 
 }
