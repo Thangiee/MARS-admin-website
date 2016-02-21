@@ -14,11 +14,13 @@ body
   body
     padding-left: 0
 
-.side-nav
-  width: 320px
-
-nav
+#toolbar
   min-height: 68px
+  z-index: 100
+  position: relative
+
+  .nav-wrapper
+    margin-left: 4%
 
 #nav-logo-container
   position: relative
@@ -49,6 +51,7 @@ nav
     height: auto
 
 #slide-out
+  width: 320px
   background-color: $dark-lighten-1
   span
     color: $white
