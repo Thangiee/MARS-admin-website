@@ -24,4 +24,11 @@ object Assistants extends Controller {
       page => Ok(page)
     )
   }
+
+  def detail(netId: String) =  Action.async { implicit request =>
+    Assistant.findByNetId(netId).fold(
+      err  => ???, // todo: 404 page
+      asst => Ok(views.html.assistantDetail(asst))
+    )
+  }
 }

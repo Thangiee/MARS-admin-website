@@ -1,0 +1,13 @@
+@import models.Request
+@(asst: Assistant)(implicit req: Request, msg: Messages)
+
+@mainWithNav("Assistants", "Assistants") {
+
+  <nav id="toolbar">
+    <div id="normal-tb" class="nav-wrapper">
+      <a href="@routes.Assistants.page()" class="breadcrumb">Assistants</a>
+      <a href="#!" class="breadcrumb">@asst.firstName @asst.lastName</a>
+    </div>
+  </nav>
+
+}

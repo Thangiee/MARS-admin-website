@@ -15,4 +15,7 @@ object Assistant {
   def all()(implicit req: Request, ex: ExecutionContext): XorF[Error, Seq[Assistant]] =
     call(GET("/assistant/all")).map(js => (js \ "assistants").as[Seq[Assistant]])
 
+  def findByNetId(id: String)(implicit req: Request, ex: ExecutionContext): XorF[Error, Assistant] =
+    call(GET(s"/assistant/$id")).map(_.as[Assistant])
+
 }

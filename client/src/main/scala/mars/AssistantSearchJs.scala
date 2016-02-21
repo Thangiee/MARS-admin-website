@@ -26,7 +26,7 @@ object AssistantSearchJS {
     // Map[key="fullName netId", value=html], key is used later for searching.
     val asstsMap = assts.map(asst =>
       s"${asst.fullName} ${asst.netId}".toLowerCase -> {
-        a(`class`:="collection-item avatar",
+        a(`class`:="collection-item avatar", href:="/assistants/detail/"+asst.netId,
           img(`class`:="profile circle", data("name"):=initials(asst.fullName)),
           span(`class`:="title grey-text text-darken-3", s"${asst.fullName}"),
           p(`class`:="grey-text text-darken-3", asst.email, br, "Job: "+asst.job)
