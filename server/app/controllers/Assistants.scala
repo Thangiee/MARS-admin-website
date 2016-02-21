@@ -11,17 +11,15 @@ import play.api.mvc._
 object Assistants extends Controller {
 
   def page() = Action.async { implicit request =>
-    val res = for(assts <- Assistant.all()) yield {
-      // todo: filter out non approved assistants
-      val asstsJsValue = Json.toJson(assts.map(a =>
-        Map("fullName" -> s"${a.firstName} ${a.lastName}", "netId" -> a.netId, "email" -> a.email, "job" -> a.job)
-      ))
-      views.html.assistants(Json.stringify(asstsJsValue))
-    }
-
-    res.fold(
-      err  => Redirect(routes.Login.page()).withNewSession,
-      page => Ok(page)
+    Assistant.all().fold(
+      err   => Redirect(routes.Login.page()).withNewSession,
+      assts => {
+        // todo: filter out non approved assistants
+        val asstsJsValue = Json.toJson(assts.map(a =>
+          Map("fullName" -> s"${a.firstName} ${a.lastName}", "netId" -> a.netId, "email" -> a.email, "job" -> a.job)
+        ))
+        Ok(views.html.assistants(Json.stringify(asstsJsValue)))
+      }
     )
   }
 
