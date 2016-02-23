@@ -24,9 +24,18 @@ object Assistants extends Controller {
   }
 
   def detail(netId: String) =  Action.async { implicit request =>
-    Assistant.findByNetId(netId).fold(
+    val fetchAsst  = Assistant.findByNetId(netId)
+    val fetchFaces = Assistant.faceImgsByNetId(netId)
+    val res = for {
+      asst  <- fetchAsst
+      faces <- fetchFaces
+    } yield {
+      views.html.assistantDetail(asst,faces.map(_.url))
+    }
+
+    res.fold(
       err  => ???, // todo: 404 page
-      asst => Ok(views.html.assistantDetail(asst))
+      page => Ok(page)
     )
   }
 }
