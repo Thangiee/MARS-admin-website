@@ -24,13 +24,14 @@ object Assistants extends Controller {
   }
 
   def detail(netId: String) =  Action.async { implicit request =>
-    val fetchAsst  = Assistant.findByNetId(netId)
-    val fetchFaces = Assistant.faceImgsByNetId(netId)
+    val fetchAsst    = Assistant.findByNetId(netId)
+    val fetchFaces   = Assistant.faceImgsByNetId(netId)
+
     val res = for {
-      asst  <- fetchAsst
-      faces <- fetchFaces
+      asst    <- fetchAsst
+      faces   <- fetchFaces
     } yield {
-      views.html.assistantDetail(asst,faces.map(_.url))
+      views.html.assistantDetail(asst, faces.map(_.url))
     }
 
     res.fold(

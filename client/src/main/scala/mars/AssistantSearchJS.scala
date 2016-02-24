@@ -4,17 +4,20 @@ import org.scalajs.dom._
 import org.scalajs.jquery._
 import upickle.default._
 
+import scala.scalajs.js.annotation.JSExport
 import scala.scalajs.js.{Dynamic, JSON}
 import scala.util.Random
 import scalatags.Text.all._
 
+@JSExport
 object AssistantSearchJS {
 
   case class Assistant(fullName: String, netId: String, email: String, job: String)
 
   val $ = jQuery
 
-  def init() = {
+  @JSExport
+  def init(): Unit = {
     val seed = Random.nextInt(9999)
     val asstsContainer = $("#assts-list")
     // parse the assistants JSON data stored in assistants.scala.html

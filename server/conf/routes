@@ -2,7 +2,6 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
 GET         /                    controllers.Application.index
 
 GET         /login               controllers.Login.page
@@ -17,3 +16,5 @@ GET         /assistants/detail/:netId  controllers.Assistants.detail(netId: Stri
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)
+
+GET         /api/records/:netId/:filter         controllers.Api.records(netId: String, filter: String)

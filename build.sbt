@@ -15,6 +15,7 @@ lazy val server = (project in file("server")).settings(
     "org.webjars" % "jquery-validation" % "1.14.0-1",
     "org.spire-math" %% "cats" % "0.3.0",
     "org.scalaj" %% "scalaj-http" % "2.1.0",
+    "com.github.nscala-time" %% "nscala-time" % "2.6.0",
     specs2 % Test
   ),
   // Heroku specific
@@ -29,6 +30,7 @@ lazy val client = (project in file("client")).settings(
   persistLauncher := true,
   persistLauncher in Test := false,
   libraryDependencies ++= Seq(
+    "org.spire-math" %%% "cats" % "0.3.0",
     "be.doeraene" %%% "scalajs-jquery" % "0.8.1",
     "com.lihaoyi" %%% "scalatags" % "0.5.4",
     "com.lihaoyi" %%% "upickle" % "0.3.8"
