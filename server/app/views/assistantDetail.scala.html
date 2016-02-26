@@ -46,7 +46,7 @@
           <select class="image-picker">
             <option value=""></option>
             @for(url <- faceImgUrls) {
-              <option data-img-src="@url" value="@{url.split("/").last}"></option>
+              <option data-img-src="@url?size=64" value="@{url.split("/").last}"></option>
             }
           </select>
 
