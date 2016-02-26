@@ -24,5 +24,5 @@ object Api extends Controller {
     )
   }
 
-  private def formatTime(ms: Long): String = DateTimeFormat.forPattern("MM-dd-YYYY h:mm a").print(ms)
+  private def formatTime(ms: Long): String = DateTimeFormat.forPattern("MM/dd/YY h:mm a").print(ms)
 }
