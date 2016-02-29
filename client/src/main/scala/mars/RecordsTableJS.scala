@@ -30,18 +30,19 @@ object RecordsTableJS {
       renderTable(netId, filter)
     })
 
-    // edit btn
-    $(document).on("click", "#edit-record-btn", (e: Event) => {
+    // edit icon
+    $(document).on("click", "#edit-record-icon", (e: Event) => {
       val id = $(e.target).closest("a").data("id")
       Dynamic.global.$("#edit-record-dialog-"+id).openModal()
     })
 
-    // delete btn
-    $(document).on("click", "#del-record-btn", (e: Event) => {
-      //todo: show delete confirmation dialog
+    // delete icon
+    $(document).on("click", "#del-record-icon", (e: Event) => {
+      val id = $(e.target).closest("a").data("id")
+      Dynamic.global.$("#delete-record-dialog-"+id).openModal() //show delete confirmation dialog
       //todo: call delete on backend via REST API
-      Dynamic.global.$(e.target).closest("a").tooltip("remove")
-      $(e.target).closest("tr").empty()
+//      Dynamic.global.$(e.target).closest("a").tooltip("remove")
+//      $(e.target).closest("tr").empty()
     })
   }
 
@@ -89,13 +90,14 @@ object RecordsTableJS {
               tr(id := "record-" + r.id,
                 td(r.inTime.toString), td(r.inLoc), td(r.outTime), td(r.outLoc),
                 td(
-                  a(id := "edit-record-btn", cls := "tooltipped", data.position := "left", data.delay := "50", data.tooltip := "edit", data.id := r.id, href := "#",
+                  a(id := "edit-record-icon", cls := "tooltipped", data.position := "left", data.delay := "50", data.tooltip := "edit", data.id := r.id, href := "#",
                     i(cls := "material-icons", "edit")
                   ),
                   editRecordDialog(r),
-                  a(id := "del-record-btn", cls := "tooltipped", data.position := "right", data.delay := "50", data.tooltip := "delete", data.id := r.id, href := "#",
+                  a(id := "del-record-icon", cls := "tooltipped", data.position := "right", data.delay := "50", data.tooltip := "delete", data.id := r.id, href := "#",
                     i(cls := "material-icons", "delete")
-                  )
+                  ),
+                  deleteRecordDialog(r)
                 )
               )
             })
@@ -110,7 +112,7 @@ object RecordsTableJS {
       div(cls:="modal-content",
         h4("Edit Record"),
 
-        // in
+        // in time and location
         div(cls:="row",
           div(cls:="input-field col s6",
             input(id:="in-time-input", tpe:="text", cls:="date-time-picker", value:=record.inTime),
@@ -122,7 +124,7 @@ object RecordsTableJS {
           )
         ),
 
-        // out
+        // out time and location
         div(cls:="row",
           div(cls:="input-field col s6",
             input(id:="out-time-input", tpe:="text", cls:="date-time-picker", value:=record.outTime),
@@ -135,8 +137,25 @@ object RecordsTableJS {
         )
       ),
       div(cls:="modal-footer",
-        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text","Update"),
-        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text","Cancel")
+        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Update"),
+        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
+      )
+    )
+  }
+
+  private def deleteRecordDialog(record: Record): TypedTag[String] = {
+    div(id:="delete-record-dialog-"+record.id, cls:="modal",
+      div(cls:="modal-content",
+        h4("Delete Record"),
+        p(s"In Time: ",      b(record.inTime),  br,
+          s"In Location: ",  b(record.inLoc),   br,
+          s"Out Time: ",     b(record.outTime), br,
+          s"Out Location: ", b(record.outLoc)
+        )
+      ),
+      div(cls:="modal-footer",
+        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Delete"),
+        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
       )
     )
   }
