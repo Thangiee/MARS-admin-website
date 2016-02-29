@@ -33,13 +33,27 @@ object RecordsTableJS {
     // edit icon
     $(document).on("click", "#edit-record-icon", (e: Event) => {
       val id = $(e.target).closest("a").data("id")
-      Dynamic.global.$("#edit-record-dialog-"+id).openModal()
+      Dynamic.global.$("#edit-record-dialog-"+id).openModal() // show edit dialog
+    })
+
+    // update btn in edit dialog
+    $(document).on("click", "#update-record-btn", (e: Event) => {
+      val id = $(e.target).data("id").toString
+      val inTime  = $("#in-time-input-"+id).`val`().toString
+      val outTime = $("#out-time-input-"+id).`val`().toString
+      val inLoc   = $("#in-loc-input-"+id).`val`().toString
+      val outLoc  = $("#out-loc-input-"+id).`val`().toString
     })
 
     // delete icon
     $(document).on("click", "#del-record-icon", (e: Event) => {
       val id = $(e.target).closest("a").data("id")
       Dynamic.global.$("#delete-record-dialog-"+id).openModal() //show delete confirmation dialog
+    })
+
+    // delete btn in delete dialog
+    $(document).on("click", "#delete-record-btn", (e: Event) => {
+      val id = $(e.target).data("id").toString
       //todo: call delete on backend via REST API
 //      Dynamic.global.$(e.target).closest("a").tooltip("remove")
 //      $(e.target).closest("tr").empty()
@@ -115,29 +129,29 @@ object RecordsTableJS {
         // in time and location
         div(cls:="row",
           div(cls:="input-field col s6",
-            input(id:="in-time-input", tpe:="text", cls:="date-time-picker", value:=record.inTime),
-            label(`for`:="in-time-input", cls:="active", "Current In Time: "+record.inTime)
+            input(id:="in-time-input-"+record.id, tpe:="text", cls:="date-time-picker", value:=record.inTime),
+            label(`for`:="in-time-input-"+record.id, cls:="active", "Current In Time: "+record.inTime)
           ),
           div(cls:="input-field col s6",
-            input(id:="in-loc-input", tpe:="text", value:=record.inLoc),
-            label(`for`:="in-loc-input", cls:="active", "Current In Location: "+record.inLoc)
+            input(id:="in-loc-input-"+record.id, tpe:="text", value:=record.inLoc),
+            label(`for`:="in-loc-input-"+record.id, cls:="active", "Current In Location: "+record.inLoc)
           )
         ),
 
         // out time and location
         div(cls:="row",
           div(cls:="input-field col s6",
-            input(id:="out-time-input", tpe:="text", cls:="date-time-picker", value:=record.outTime),
-            label(`for`:="out-time-input", cls:="active", "Current Out Time: "+record.outTime)
+            input(id:="out-time-input-"+record.id, tpe:="text", cls:="date-time-picker", value:=record.outTime),
+            label(`for`:="out-time-input-"+record.id, cls:="active", "Current Out Time: "+record.outTime)
           ),
           div(cls:="input-field col s6",
-            input(id:="out-loc-input", tpe:="text", value:=record.outLoc),
-            label(`for`:="out-loc-input", cls:="active", "Current Out Location: "+record.outLoc)
+            input(id:="out-loc-input-"+record.id, tpe:="text", value:=record.outLoc),
+            label(`for`:="out-loc-input-"+record.id, cls:="active", "Current Out Location: "+record.outLoc)
           )
         )
       ),
       div(cls:="modal-footer",
-        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Update"),
+        a(id:="update-record-btn", data.id:=record.id, href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Update"),
         a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
       )
     )
@@ -154,7 +168,7 @@ object RecordsTableJS {
         )
       ),
       div(cls:="modal-footer",
-        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Delete"),
+        a(id:="delete-record-btn", data.id:=record.id, href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Delete"),
         a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
       )
     )
