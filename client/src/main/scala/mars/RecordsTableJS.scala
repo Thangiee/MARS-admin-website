@@ -18,6 +18,7 @@ object RecordsTableJS {
   case class Record(id: String, netId: String, inTime: String, outTime: String, inLoc: String, outLoc: String)
 
   private val $ = jQuery
+  private val timeFormat = "MM/DD/YY h:mm a"
 
   @JSExport
   def init(netId: String): Unit = {
@@ -43,6 +44,10 @@ object RecordsTableJS {
       val outTime = $("#out-time-input-"+id).`val`().toString
       val inLoc   = $("#in-loc-input-"+id).`val`().toString
       val outLoc  = $("#out-loc-input-"+id).`val`().toString
+
+      val moment = Dynamic.global.moment
+      val inMillis  = moment(inTime, timeFormat).valueOf().toString.toLong
+      val outMillis = moment(outTime, timeFormat).valueOf().toString.toLong
     })
 
     // delete icon
@@ -68,7 +73,7 @@ object RecordsTableJS {
       // init Js libraries stuff
       Dynamic.global.$(".dropdown-button").dropdown()
       $(document).ready(Dynamic.global.$(".tooltipped").tooltip())
-      Dynamic.global.$(".date-time-picker").bootstrapMaterialDatePicker(Dynamic.literal(format="MM/DD/YY h:mm a", shortTime=true))
+      Dynamic.global.$(".date-time-picker").bootstrapMaterialDatePicker(Dynamic.literal(format=timeFormat, shortTime=true))
     }
   }
 
