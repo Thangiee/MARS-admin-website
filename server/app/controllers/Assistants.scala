@@ -30,6 +30,8 @@ object Assistants extends Controller {
     )(UpdateInfoForm.apply)(UpdateInfoForm.unapply)
   )
 
+  val deleteFaceForm = Form("face-id" -> nonEmptyText)
+
   def page() = Action.async { implicit request =>
     Assistant.all().fold(
       err   => Redirect(routes.Login.page()).withNewSession,
@@ -63,6 +65,17 @@ object Assistants extends Controller {
   def update(netId: String) = Action.async { implicit request =>
     //todo:
     updateInfoForm.bindFromRequest().fold(
+      err  => Future.successful(???),
+      data => {
+        println(data)
+        Future.successful(Redirect(routes.Assistants.detail(netId)))
+      }
+    )
+  }
+
+  def deleteFace(netId: String) = Action.async { implicit request =>
+    // todo:
+    deleteFaceForm.bindFromRequest().fold(
       err  => Future.successful(???),
       data => {
         println(data)

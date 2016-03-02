@@ -2,21 +2,23 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                                       controllers.Application.index
+GET         /                                                    controllers.Application.index
 
-GET         /login                                  controllers.Login.page
+GET         /login                                               controllers.Login.page
 
-POST        /login/auth                             controllers.Login.auth
+POST        /login/auth                                          controllers.Login.auth
 
-GET         /home                                   controllers.Home.page
+GET         /home                                                controllers.Home.page
 
-GET         /assistants                             controllers.Assistants.page
+GET         /assistants                                          controllers.Assistants.page
 
-GET         /assistants/detail/:netId               controllers.Assistants.detail(netId: String)
+GET         /assistants/detail/:netId                            controllers.Assistants.detail(netId: String)
 
-POST        /assistants/detail/:netId/update        controllers.Assistants.update(netId: String)
+POST        /assistants/detail/:netId/update                     controllers.Assistants.update(netId: String)
+
+POST        /assistants/detail/:netId/delete-face                controllers.Assistants.deleteFace(netId: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                           controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                        controllers.Assets.at(path="/public", file)
 
-GET         /api/records/:netId/:filter             controllers.Api.records(netId: String, filter: String)
+GET         /api/records/:netId/:filter                          controllers.Api.records(netId: String, filter: String)

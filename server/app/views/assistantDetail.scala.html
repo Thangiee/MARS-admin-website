@@ -44,7 +44,7 @@
 
           <div class="card-action no-padding">
             @* this btn opens the edit info dialog below on click *@
-            <a id="edit-info-btn" class="modal-trigger waves-effect btn-flat disabled orange-text darken-3" href="#edit-info-dialog">Edit Info</a>
+            <a id="edit-info-btn" class="modal-trigger waves-effect btn-flat orange-text darken-3" href="#edit-info-dialog">Edit Info</a>
 
             <div id="edit-info-dialog" class="modal modal-fixed-footer">
               @helper.form(action = routes.Assistants.update(asst.netId)) {
@@ -88,14 +88,28 @@
           <span class="card-title"><b>Face Recognition Data Set</b></span>
 
           <select class="image-picker">
-            <option value=""></option>
             @for(url <- faceImgUrls) {
               <option data-img-src="@url?size=64" value="@{url.split("/").last}"></option>
             }
           </select>
 
           <div class="card-action no-padding">
-            <a class="waves-effect btn-flat disabled orange-text darken-3">Remove</a>
+            <a class="waves-effect btn-flat orange-text darken-3 modal-trigger" href="#confirm-del-face-dialog">Remove</a>
+          </div>
+
+          <div id="confirm-del-face-dialog" class="modal">
+            @helper.form(action = routes.Assistants.deleteFace(asst.netId)) {
+              <div class="modal-content">
+                <h4>Delete Face</h4>
+                <p>Assistant will be ask to take a new face image on the mobile app to replace this image.</p>
+                <img id="confirm-del-face-dialog-img" src="@faceImgUrls.headOption.map(_ + "?size=128")" />
+                <input id="face-id-holder" name="face-id" value="@faceImgUrls.headOption.map(_.split("/").last)" hidden>
+              </div>
+              <div class="modal-footer">
+                <button id="delete-face-btn" href="#!" type="submit" class="modal-action modal-close waves-effect blue-text btn-flat">Delete</button>
+                <a href="#!" class=" modal-action modal-close waves-effect blue-text btn-flat">Cancel</a>
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -111,7 +125,9 @@
 
     $("select").imagepicker({
       selected: function() {
-//        $(this).val()
+        var imgId = $(this).val();
+        $("#confirm-del-face-dialog-img").attr("src", "http://52.33.35.165:8080/api/assets/face/"+imgId+"?size=128");
+        $("#face-id-holder").attr("value", imgId);
       }
     });
 
