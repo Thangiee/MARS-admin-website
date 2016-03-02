@@ -53,7 +53,7 @@ object Assistants extends Controller {
       asst    <- fetchAsst
       faces   <- fetchFaces
     } yield {
-      views.html.assistantDetail(asst, faces.map(_.url), updateInfoForm)
+      views.html.assistantDetail(asst, faces.map(_.url))
     }
 
     res.fold(
