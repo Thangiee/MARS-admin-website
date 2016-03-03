@@ -19,6 +19,9 @@ case class Instructor(
 object Instructor {
   implicit val instFmt = Json.format[Instructor]
 
+  def all()(implicit req: Request, ex: ExecutionContext): XorF[Error, Seq[Instructor]] =
+    call(GET("/instructor/all")).map(js => (js \ "instructors").as[Seq[Instructor]])
+
   def current()(implicit req: Request, ex: ExecutionContext): XorF[Error, Instructor] =
     call(GET("/instructor")).map(_.as[Instructor])
 }

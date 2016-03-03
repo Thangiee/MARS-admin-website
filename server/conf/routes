@@ -18,6 +18,8 @@ POST        /assistants/detail/:netId/update                     controllers.Ass
 
 POST        /assistants/detail/:netId/delete-face                controllers.Assistants.deleteFace(netId: String)
 
+GET         /approval                                            controllers.Approval.page
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                                        controllers.Assets.at(path="/public", file)
 
