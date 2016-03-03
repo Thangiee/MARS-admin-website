@@ -5,7 +5,16 @@ import play.api.libs.json._
 
 import scala.concurrent.ExecutionContext
 
-case class Instructor(netId: String, email: String, lastName: String, firstName: String)
+case class Instructor(
+  netId: String,
+  username: String,
+  role: String,
+  createTime: Long,
+  approve: Boolean,
+  email: String,
+  lastName: String,
+  firstName: String
+)
 
 object Instructor {
   implicit val instFmt = Json.format[Instructor]
