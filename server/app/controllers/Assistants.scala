@@ -1,7 +1,7 @@
 package controllers
 
 import cats.std.all._
-import models.Assistant
+import models.{FaceImg, Assistant}
 import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
@@ -47,7 +47,7 @@ object Assistants extends Controller {
 
   def detail(netId: String) =  Action.async { implicit request =>
     val fetchAsst    = Assistant.findByNetId(netId)
-    val fetchFaces   = Assistant.faceImgsByNetId(netId)
+    val fetchFaces   = FaceImg.findByNetId(netId)
 
     val res = for {
       asst    <- fetchAsst
