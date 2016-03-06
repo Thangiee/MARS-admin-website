@@ -1,17 +1,18 @@
 package controllers
 
+import javax.inject.Inject
+
 import models.Account
 import cats.std.all._
-import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.i18n.Messages.Implicits._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-object Login extends Controller {
+class Login @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   val loginForm = Form(
     tuple(

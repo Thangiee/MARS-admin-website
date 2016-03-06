@@ -1,20 +1,21 @@
 package controllers
 
+import javax.inject.Inject
+
 import cats.std.all._
 import models.{FaceImg, Assistant}
-import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.format.Formats._
 import play.api.data.validation.Constraints._
-import play.api.i18n.Messages.Implicits._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import play.api.mvc._
 
 import scala.concurrent.Future
 
-object Assistants extends Controller {
+class Assistants @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   case class UpdateInfoForm(email: String, empId: String, payRate: Double, job: String, dept: String, title: String, code: String, thres: Double)
   val updateInfoForm: Form[UpdateInfoForm] = Form(

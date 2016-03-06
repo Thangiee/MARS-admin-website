@@ -1,5 +1,4 @@
 @import models.Request
-@import controllers.Assistants.UpdateInfoForm
 @(asst: Assistant, faceImgUrls: Seq[String])(implicit req: Request, msg: Messages)
 
 @fullName = @{s"${asst.firstName.capitalize} ${asst.lastName.capitalize}"}

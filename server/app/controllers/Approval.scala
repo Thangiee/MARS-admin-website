@@ -1,13 +1,14 @@
 package controllers
 
+import javax.inject.Inject
+
 import cats.std.all._
 import models.{Assistant, Instructor}
-import play.api.Play.current
-import play.api.i18n.Messages.Implicits._
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc._
 
-object Approval extends Controller {
+class Approval @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def page = Action.async { implicit request =>
     val fetchAssts    = Assistant.all()

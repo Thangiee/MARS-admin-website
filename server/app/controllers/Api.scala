@@ -7,7 +7,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc._
 
-object Api extends Controller {
+class Api() extends Controller {
 
   def records(netId: String, filter: String) = Action.async { implicit request =>
     Record.findByNetId(netId, filter).fold(

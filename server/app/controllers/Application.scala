@@ -5,7 +5,7 @@ import models.Instructor
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc._
 
-object Application extends Controller {
+class Application() extends Controller {
 
   def index = Action.async { implicit request =>
     Instructor.current().fold(
