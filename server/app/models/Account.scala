@@ -8,7 +8,7 @@ import play.api.libs.json._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-case class Account(netId: String, role: String, username: String, createTime: Long, passwd: String)
+case class Account(netId: String, role: String, username: String, createTime: Long)
 
 object Account {
 
