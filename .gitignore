@@ -14,6 +14,7 @@ dist
 /RUNNING_PID
 .settings
 .DS_Store
+.sass-cache
 
 # hidden cross project folders
 shared/.js

@@ -1,1 +1,50 @@
-@()
+@import views.html.materials.matInput
+@import controllers.SignUp.CreateAccForm
+@(form: Form[CreateAccForm])(implicit msg: Messages, flash: Flash)
+
+@main("Sign up", "sass/sign_up.min.css") {
+  <div class="container row">
+    <div class="card col offset-l3 l6">
+      <div class="card-content">
+        <h5>Sign Up</h5>
+        <div class="divider"></div>
+        @helper.form(action = routes.SignUp.create(), 'id -> "sign-up-form") {
+          <div class="row">
+            <div class="col s6">@matInput(form("netid"), '_label -> "Net Id")</div>
+            <div class="col s6">@matInput(form("username"), '_label -> "Username")</div>
+          </div>
+
+          @matInput(form("passwd"), '_label -> "Password", 'type -> "password")
+          @matInput(form("passwd2"), '_label -> "Confirm Password", 'type -> "password")
+          @matInput(form("email"), '_label -> "email")
+
+          <div class="row">
+            <div class="col s6">@matInput(form("first-name"), '_label -> "First")</div>
+            <div class="col s6"> @matInput(form("last-name"), '_label -> "Last")</div>
+          </div>
+
+          <em>
+            * New accounts need to be approved by the admin before you can log into the website.
+          </em>
+
+          <div class="card-action">
+            <button id="sign-up" class="waves-effect waves-light btn blue" type="submit">Sign Up</button>
+            <a id="back" href="@routes.Login.page()" class="waves-effect btn-flat blue-text">Back</a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @form.globalError.map { err =>
+    <script>
+      $(document).ready(function($) {
+        $.snackbar({
+          content: "@err.message",
+          timeout: 5000
+        })
+      });
+    </script>
+  }
+
+}
