@@ -17,7 +17,7 @@ case class Record(
 object Record {
   implicit val recordFmt = Json.format[Record]
 
-  def findByNetId(id: String, filter: String = "all")(implicit req: Request, ex: ExecutionContext): XorF[Error, Seq[Record]] = {
+  def findByNetId(id: String, filter: String = "all")(implicit req: Request, ex: ExeCtx): Response[Seq[Record]] = {
     val url = filter match {
       case "pay-period" | "month" | "year" => s"/records/$id?filter=$filter"
       case _                               => s"/records/$id"

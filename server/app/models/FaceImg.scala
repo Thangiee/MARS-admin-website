@@ -10,6 +10,6 @@ case class FaceImg(id: String, url: String)
 object FaceImg {
   implicit val faceFmt = Json.format[FaceImg]
 
-  def findByNetId(id: String)(implicit req: Request, ex: ExecutionContext): XorF[Error, Seq[FaceImg]] =
+  def findByNetId(id: String)(implicit req: Request, ex: ExeCtx): Response[Seq[FaceImg]] =
     call(GET(s"/face/$id")).map(js => (js \ "images").as[Seq[FaceImg]])
 }

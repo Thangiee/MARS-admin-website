@@ -12,8 +12,10 @@ import scala.collection.JavaConversions._
 
 package object models {
 
+  type ExeCtx = scala.concurrent.ExecutionContext
   type XorF[L, R] = XorT[Future, L, R]
   type Request = play.api.mvc.Request[AnyContent]
+  type Response[R] = XorF[Error, R]
 
   case class Error(code: Int, msg: String) {
     def toResponse = Status(code)(msg)
