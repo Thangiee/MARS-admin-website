@@ -24,6 +24,15 @@ object Account {
     })
   }
 
-  def current()(implicit req: Request, ex: ExeCtx): Response[Account] =
-    call(GET("/account")).map(_.as[Account])
+  def logout()(implicit req: Request, exeCtx: ExeCtx): Response[Unit] = call(POST("/session/logout")).map(_ => ())
+
+  def current()(implicit req: Request, ec: ExeCtx): Response[Account] = call(GET("/account")).map(_.as[Account])
+
+  def delete(netId: String)(implicit req: Request, ec: ExeCtx): Response[Unit] = call(DELETE(s"/account/$netId")).map(_ => ())
+
+  def approve(netId: String)(implicit req: Request, ec: ExeCtx): Response[Unit] =
+    call(POST(s"/account/change-approve/$netId").postForm.param("approve", "true")).map(_ => ())
+
+  def changePasswd(netId: String, newPass: String)(implicit req: Request, ec: ExeCtx): Response[Unit] =
+    call(POST(s"/account/change-password/$netId").postForm.param("new_password", newPass)).map(_ => ())
 }

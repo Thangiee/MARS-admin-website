@@ -21,9 +21,12 @@ package object models {
     def toResponse = Status(code)(msg)
   }
 
-  protected[models] val baseUrl = "http://52.33.35.165:8080/api"
-  protected[models] def POST(route: String) = Http(baseUrl + route).timeout(10000, 10000).method("POST")
-  protected[models] def GET(route: String)  = Http(baseUrl + route).timeout(10000, 10000).method("GET")
+  private val baseUrl = "http://52.33.35.165:8080/api"
+  private def httpMethod(route: String, method: String) = Http(baseUrl + route).timeout(10000, 10000).method(method)
+  protected[models] def GET(route: String)  = httpMethod(route, "GET")
+  protected[models] def POST(route: String) = httpMethod(route, "POST")
+  protected[models] def PUT(route: String)  = httpMethod(route, "PUT")
+  protected[models] def DELETE(route: String) = httpMethod(route, "DELETE")
 
   // todo: need caching?
   protected[models] def call(request: HttpRequest)(implicit req: Request, ex: ExecutionContext): XorF[Error, JsValue] = {

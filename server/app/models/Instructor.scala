@@ -19,9 +19,12 @@ case class Instructor(
 object Instructor {
   implicit val instFmt = Json.format[Instructor]
 
-  def all()(implicit req: Request, ex: ExeCtx): Response[Seq[Instructor]] =
+  def all()(implicit req: Request, ec: ExeCtx): Response[Seq[Instructor]] =
     call(GET("/instructor/all")).map(js => (js \ "instructors").as[Seq[Instructor]])
 
-  def current()(implicit req: Request, ex: ExeCtx): Response[Instructor] =
+  def current()(implicit req: Request, ec: ExeCtx): Response[Instructor] =
     call(GET("/instructor")).map(_.as[Instructor])
+
+  def changeRole(netId: String, isAdmin: Boolean): Response[Account] =
+    call(POST(s"/account/instructor/change-role/$netId").postForm.param("is_admin", isAdmin.toString)).map(_.as[Account])
 }

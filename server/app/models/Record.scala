@@ -24,4 +24,15 @@ object Record {
     }
     call(GET(url)).map(js => (js \ "records").as[Seq[Record]])
   }
+
+  def update(id: String, inTime: Long, outTime: Long, inComp: String, outComp: String)(implicit req: Request, ex: ExeCtx): Response[Unit] =
+    call(POST(s"/records/$id").postForm
+      .params("in_time" -> inTime.toString, "out_time" -> outTime.toString, "in_comp_id" -> inComp, "out_comp_id" -> outComp))
+      .map(_ => ())
+
+  def delete(id: String)(implicit req: Request, ex: ExeCtx): Response[Unit] = call(DELETE(s"/records/$id")).map(_ -> ())
+
+  def timeSheet(netId: String, year: Int, month: Int, firstHalf: Boolean)(implicit req: Request, ex: ExeCtx): Response[Unit] =
+    if (firstHalf) call(GET(s"/time-sheet/$netId/first-half-month?year=$year&month=$month")).map(_ => ())
+    else           call(GET(s"/time-sheet/$netId/second-half-month?year=$year&month=$month")).map(_ => ())
 }
