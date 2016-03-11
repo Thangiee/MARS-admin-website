@@ -2,31 +2,60 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                                                    controllers.Application.index
+GET           /                                            controllers.Application.index
 
-GET         /login                                               controllers.Login.page
+GET           /login                                       controllers.Login.page
 
-POST        /login/auth                                          controllers.Login.auth
+POST          /login/auth                                  controllers.Login.auth
 
-GET         /home                                                controllers.Home.page
+GET           /home                                        controllers.Home.page
 
-GET         /assistants                                          controllers.Assistants.page
+GET           /assistants                                  controllers.Assistants.page
 
-GET         /assistants/detail/:netId                            controllers.Assistants.detail(netId: String)
+GET           /assistants/detail/:netId                    controllers.Assistants.detail(netId: String)
 
-POST        /assistants/detail/:netId/update                     controllers.Assistants.update(netId: String)
+POST          /assistants/detail/:netId/update             controllers.Assistants.update(netId: String)
 
-POST        /assistants/detail/:netId/delete-face                controllers.Assistants.deleteFace(netId: String)
+POST          /assistants/detail/:netId/delete-face        controllers.Assistants.deleteFace(netId: String)
 
-GET         /approval                                            controllers.Approval.page
+GET           /approval                                    controllers.Approval.page
 
-GET         /accounts/management                                 controllers.AccountsMngt.page
+GET           /accounts/management                         controllers.AccountsMngt.page
 
-GET         /signup                                              controllers.SignUp.page
+GET           /signup                                      controllers.SignUp.page
 
-POST        /signup/create                                       controllers.SignUp.create
+POST          /signup/create                               controllers.SignUp.create
+
+# POST          /logout                                      ???
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                                        controllers.Assets.at(path="/public", file)
+GET           /assets/*file                                controllers.Assets.at(path="/public", file)
 
-GET         /api/records/:netId/:filter                          controllers.Api.records(netId: String, filter: String)
+# APIS
+POST          /api/account/:netId/change-pass              controllers.Api.changePasswd(netId: String)
+
+POST          /api/account/:netId/approve                  controllers.Api.approve(netId: String)
+
+DELETE        /api/account/:netId                          controllers.Api.deleteAccount(netId: String)
+
+GET           /api/assistant/all                           controllers.Api.allAssistants
+
+GET           /api/assistant/:netId                        controllers.Api.assistant(netId: String)
+
+POST          /api/assistant/:netId/update                 controllers.Api.updateAssistant(netId: String)
+
+GET           /api/face-img/:netId                         controllers.Api.faceImg(netId: String)
+
+DELETE        /api/face-img/:imgId                         controllers.Api.deleteFaceImg(imgId: String)
+
+GET           /api/instructor/all                          controllers.Api.allInstructor
+
+POST          /api/instructor/:netId/change-role           controllers.Api.changeInstructorRole(netId: String)
+
+GET           /api/records/:netId/:filter                  controllers.Api.records(netId: String, filter: String)
+
+POST          /api/record/:id/update                       controllers.Api.updateRecord(id: String)
+
+DELETE        /api/record/:id                              controllers.Api.deleteRecord(id: String)
+
+# todo: timesheet routes
