@@ -3,8 +3,6 @@ package models
 import cats.std.all._
 import play.api.libs.json._
 
-import scala.concurrent.ExecutionContext
-
 case class Instructor(
   netId: String,
   username: String,
@@ -25,6 +23,6 @@ object Instructor {
   def current()(implicit req: Request, ec: ExeCtx): Response[Instructor] =
     call(GET("/instructor")).map(_.as[Instructor])
 
-  def changeRole(netId: String, isAdmin: Boolean): Response[Account] =
+  def changeRole(netId: String, isAdmin: Boolean)(implicit req: Request, ec: ExeCtx): Response[Account] =
     call(POST(s"/account/instructor/change-role/$netId").postForm.param("is_admin", isAdmin.toString)).map(_.as[Account])
 }

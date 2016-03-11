@@ -3,8 +3,6 @@ package models
 import cats.std.all._
 import play.api.libs.json.Json
 
-import scala.concurrent.ExecutionContext
-
 case class Record(
   id: Int,
   netId: String,
@@ -30,7 +28,7 @@ object Record {
       .params("in_time" -> inTime.toString, "out_time" -> outTime.toString, "in_comp_id" -> inComp, "out_comp_id" -> outComp))
       .map(_ => ())
 
-  def delete(id: String)(implicit req: Request, ex: ExeCtx): Response[Unit] = call(DELETE(s"/records/$id")).map(_ -> ())
+  def delete(id: String)(implicit req: Request, ex: ExeCtx): Response[Unit] = call(DELETE(s"/records/$id")).map(_ => ())
 
   def timeSheet(netId: String, year: Int, month: Int, firstHalf: Boolean)(implicit req: Request, ex: ExeCtx): Response[Unit] =
     if (firstHalf) call(GET(s"/time-sheet/$netId/first-half-month?year=$year&month=$month")).map(_ => ())
