@@ -3,19 +3,17 @@ package mars
 import cats.std.all._
 import org.scalajs.dom._
 import org.scalajs.jquery._
-import upickle.default._
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
 import scala.scalajs.js.Dynamic
 import scala.scalajs.js.annotation.JSExport
 import scalatags.Text.TypedTag
 import scalatags.Text.all._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 @JSExport
 object RecordsTableJS {
-
-  case class Record(id: String, netId: String, inTime: String, outTime: String, inLoc: String, outLoc: String)
 
   private val $ = jQuery
   private val timeFormat = "MM/DD/YY h:mm a"
@@ -66,14 +64,12 @@ object RecordsTableJS {
   }
 
   private def renderTable(netId: String, filterOption: String): Unit = {
-    GET(s"/api/records/$netId/$filterOption").map { js =>
-      val records = read[Seq[Record]](js)
+    MarsApi.records(netId, filterOption).map { records =>
       $("#record-table-container").empty().append(recordsTable(records, filterOption).render)
-
       // init Js libraries stuff
       Dynamic.global.$(".dropdown-button").dropdown()
       $(document).ready(Dynamic.global.$(".tooltipped").tooltip())
-      Dynamic.global.$(".date-time-picker").bootstrapMaterialDatePicker(Dynamic.literal(format=timeFormat, shortTime=true))
+      Dynamic.global.$(".date-time-picker").bootstrapMaterialDatePicker(Dynamic.literal(format = timeFormat, shortTime = true))
     }
   }
 
