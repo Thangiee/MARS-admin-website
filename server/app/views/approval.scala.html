@@ -1,93 +1,24 @@
 @import models.Request
-@(assts: Seq[Assistant], insts: Seq[Instructor])(implicit req: Request, msg: Messages)
+@()(implicit req: Request, msg: Messages)
 
 @mainWithNav("Approve Accounts", "Approval", "sass/approval.min.css") {
 
   <div class="container">
-      <div class="row">
-        <div class="col s12 ">
-          <ul class="tabs">
-            <li class="tab col s6"><a href="#tab1">Assistants</a></li>
-            <li class="tab col s6"><a href="#tab2">Instructors</a></li>
-          </ul>
-        </div>
-
-        <div id="tab1" class="col s12">
-          <ul class="collapsible" data-collapsible="accordion">
-            @for(asst <- assts) {
-              <li>
-                @accHeader(asst.netId, s"${asst.firstName} ${asst.lastName}", asst.email)
-                @asstContent(asst)
-              </li>
-            }
-          </ul>
-        </div>
-
-        <div id="tab2" class="col s12">
-          <ul class="collapsible" data-collapsible="accordion">
-          @for(inst <- insts) {
-            <li>
-              @accHeader(inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email)
-            </li>
-          }
-          </ul>
-        </div>
+    <div class="row">
+      <div class="col s12 ">
+        <ul class="tabs">
+          <li class="tab col s6"><a href="#tab1">Assistants</a></li>
+          <li class="tab col s6"><a href="#tab2">Instructors</a></li>
+        </ul>
       </div>
+
+      <div id="tab1" class="col s12"></div>
+
+      <div id="tab2" class="col s12"></div>
+    </div>
   </div>
 
   <script>
-    $(".profile").initial({
-      height: 46,
-      width: 46,
-      charCount: 2,
-      fontSize: 20
-    });
-
-    $(".approve-btn").on("click", function() {
-      event.stopPropagation(); // prevent content expanding
-      var btn = $(this);
-      console.log(btn.data("netid")); // todo:
-      btn.closest("li").remove();
-    });
-
-    $(".reject-btn").on("click", function() {
-      event.stopPropagation(); // prevent content expanding
-      var btn = $(this);
-      console.log(btn.data("netid")); // todo:
-      btn.closest("li").remove();
-    })
+    mars.ApprovalJS().init();
   </script>
-}
-
-@accHeader(netId: String, fullName: String, email: String) = {
-  <div class="collapsible-header">
-    <div class="row">
-      <div>
-        <img class="profile circle col" data-name="@fullName.split(" ").map(_.head.toString).reduce(_ + _)" />
-        <h6 class="col">@netId<br>@fullName<br>@email</h6>
-      </div>
-      <div class="secondary-content">
-        <a class="reject-btn waves-effect waves-light btn red" data-netid="@netId">Reject</a>
-        <a class="approve-btn waves-effect waves-light btn green" data-netid="@netId">Approve</a>
-      </div>
-    </div>
-  </div>
-}
-
-@asstContent(asst: Assistant) = {
-  @defining(Seq(
-    ("Job: " + asst.job, "Pay Rate ($/Hr): $" + asst.rate.toString),
-    ("Username: " + asst.username, "Department: " + asst.department),
-    ("Employee Id: " + asst.employeeId, "Title: " + asst.title),
-    ("Title Code: " + asst.titleCode, "")
-  )) { items =>
-    <div class="collapsible-body">
-      @for((l, r) <- items) {
-        <div class="row">
-          <p class="col s6 center-align">@l</p>
-          <p class="col s6 center-align">@r</p>
-        </div>
-      }
-    </div>
-  }
 }

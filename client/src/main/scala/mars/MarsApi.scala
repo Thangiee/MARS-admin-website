@@ -16,6 +16,10 @@ object MarsApi {
   def records(netId: String, filterOption: String): Response[Seq[Record]] =
     GET(s"/api/records/$netId/$filterOption").map(read[Seq[Record]](_))
 
+  def allAssistant: Response[Seq[Assistant]] = GET(s"/api/assistant/all").map(read[Seq[Assistant]](_))
+
+  def allInstructor: Response[Seq[Instructor]] = GET(s"/api/instructor/all").map(read[Seq[Instructor]](_))
+
   protected def call(request: Future[XMLHttpRequest])(implicit ex: ExecutionContext): XorF[Error, String] = {
     XorT(request.map { response =>
       response.status match {

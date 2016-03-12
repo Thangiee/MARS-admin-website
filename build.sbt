@@ -27,6 +27,7 @@ lazy val server = (project in file("server")).settings(
   dependsOn(sharedJvm)
 
 lazy val client = (project in file("client")).settings(
+  scalacOptions += "-Xexperimental",
   scalaVersion := scalaV,
   persistLauncher := true,
   persistLauncher in Test := false,
@@ -34,8 +35,12 @@ lazy val client = (project in file("client")).settings(
     "org.spire-math" %%% "cats" % "0.3.0",
     "be.doeraene" %%% "scalajs-jquery" % "0.8.1",
     "com.lihaoyi" %%% "scalatags" % "0.5.4",
-    "com.lihaoyi" %%% "upickle" % "0.3.8"
-  )
+    "com.lihaoyi" %%% "upickle" % "0.3.8",
+    "com.github.japgolly.scalajs-react" %%% "core" % "0.10.4"
+  ),
+  jsDependencies ++= Seq(
+    "org.webjars.bower" % "react" % "0.14.3" / "react-with-addons.js" minified "react-with-addons.min.js" commonJSName "React",
+    "org.webjars.bower" % "react" % "0.14.3" / "react-dom.js" minified  "react-dom.min.js" dependsOn "react-with-addons.js" commonJSName "ReactDOM")
 ).enablePlugins(ScalaJSPlugin, ScalaJSPlay).
   dependsOn(sharedJs)
 

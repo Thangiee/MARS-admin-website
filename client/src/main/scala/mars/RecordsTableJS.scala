@@ -103,7 +103,7 @@ object RecordsTableJS {
           tbody(
             records.map(r => {
               tr(id := "record-" + r.id,
-                td(r.inTime.toString), td(r.inLoc), td(r.outTime), td(r.outLoc),
+                td(r.inTime), td(r.inLoc), td(r.outTime), td(r.outLoc),
                 td(
                   a(id := "edit-record-icon", cls := "tooltipped", data.position := "left", data.delay := "50", data.tooltip := "edit", data.id := r.id, href := "#",
                     i(cls := "material-icons", "edit")
