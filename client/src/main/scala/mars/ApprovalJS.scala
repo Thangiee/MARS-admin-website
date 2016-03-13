@@ -1,15 +1,15 @@
 package mars
 
-import japgolly.scalajs.react._
-import org.scalajs.dom._
-import japgolly.scalajs.react.vdom.all._
-
-import scala.scalajs.js.annotation.JSExport
 import cats.std.all._
+import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.Attr
+import japgolly.scalajs.react.vdom.all._
+import org.scalajs.dom._
+import org.scalajs.jquery.jQuery
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js.Dynamic
+import scala.scalajs.js.annotation.JSExport
 
 @JSExport
 object ApprovalJS {
@@ -23,7 +23,7 @@ object ApprovalJS {
     val fetchInsts = MarsApi.allInstructor
 
     (for { assts <- fetchAssts; insts <- fetchInsts } yield (assts, insts)).fold(
-      err => println("error " + err),
+      err => toast("Failed to load data due to " + err.msg),
       res => {
         val (assts, insts) = res
         renderAsstsTab(assts.filterNot(_.approve))
@@ -37,9 +37,23 @@ object ApprovalJS {
   private def renderAsstsTab(assts: Seq[Assistant]): Unit = {
 
     class HeaderBackend(val $: BackendScope[Unit, State[Assistant]]) {
-      def onReject(netId: String): Callback = remove(netId)
-      def onApprove(netId: String): Callback = remove(netId)
-      def remove(netId: String): Callback = $.modState(s => s.copy(items = s.items.filterNot(_.netId == netId)))
+      def onReject(netId: String, name: String)(e: ReactEventI): Callback = {
+        jQuery(e.target).click() /* fix collapse bug*/
+        MarsApi.deleteAcc(netId).fold(
+          err => toastCB("Unable to reject account due to " + err.msg),
+          _   => remove(netId, e).flatMap(_ => toastCB(s"Rejected $name"))
+        )
+      }
+
+      def onApprove(netId: String, name: String)(e: ReactEventI): Callback = {
+        jQuery(e.target).click()
+        MarsApi.approveAcc(netId).fold(
+          err => toastCB("Unable to approve account due to " + err.msg),
+          _   => remove(netId, e).flatMap(_ => toastCB(s"Approved $name"))
+        )
+      }
+
+      def remove(netId: String, e: ReactEventI): Callback = $.modState(s => s.copy(items = s.items.filterNot(_.netId == netId)))
     }
 
     val accHeader = ReactComponentB[(String, String, String, HeaderBackend)]("header")
@@ -51,8 +65,8 @@ object ApprovalJS {
               h6(cls := "col", netId, br, fullName, br, email)
             ),
             div(cls := "secondary-content",
-              a(cls := "reject-btn waves-effect waves-light btn red", onClick --> backend.onReject(netId), "Reject"),
-              a(cls := "approve-btn waves-effect waves-light btn green", onClick --> backend.onApprove(netId), "Approve")
+              a(cls := "reject-btn waves-effect waves-light btn red fuck", onClick ==> backend.onReject(netId, fullName), "Reject"),
+              a(cls := "approve-btn waves-effect waves-light btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
             )
           )
         )
@@ -86,7 +100,7 @@ object ApprovalJS {
       .initialState(new State(assts))
       .backend(new HeaderBackend(_))
       .renderS(($, s) =>
-        ul(cls := "collapsible", Attr("data-collapsible") := "accordion",
+        ul(cls := "collapsible", Attr("data-collapsible") := "expandable",
           s.items.map(asst => asstRow((asst, $.backend)))
         )
       )
@@ -98,9 +112,23 @@ object ApprovalJS {
   private def renderInstsTab(insts: Seq[Instructor]): Unit = {
 
     class HeaderBackend(val $: BackendScope[Unit, State[Instructor]]) {
-      def onReject(netId: String): Callback = remove(netId)
-      def onApprove(netId: String): Callback = remove(netId)
-      def remove(netId: String): Callback = $.modState(s => s.copy(items = s.items.filterNot(_.netId == netId)))
+      def onReject(netId: String, name: String)(e: ReactEventI): Callback = {
+        jQuery(e.target).click() /* fix collapse bug*/
+        MarsApi.deleteAcc(netId).fold(
+          err => toastCB("Unable to reject account due to " + err.msg),
+          _   => remove(netId, e).flatMap(_ => toastCB(s"Rejected $name"))
+        )
+      }
+
+      def onApprove(netId: String, name: String)(e: ReactEventI): Callback = {
+        jQuery(e.target).click()
+        MarsApi.approveAcc(netId).fold(
+          err => toastCB("Unable to approve account due to " + err.msg),
+          _   => remove(netId, e).flatMap(_ => toastCB(s"Approved $name"))
+        )
+      }
+
+      def remove(netId: String, e: ReactEventI): Callback = $.modState(s => s.copy(items = s.items.filterNot(_.netId == netId)))
     }
 
     val accHeader = ReactComponentB[(String, String, String, HeaderBackend)]("header")
@@ -112,8 +140,8 @@ object ApprovalJS {
               h6(cls := "col", netId, br, fullName, br, email)
             ),
             div(cls := "secondary-content",
-              a(cls := "reject-btn waves-effect waves-light btn red", onClick --> backend.onReject(netId), "Reject"),
-              a(cls := "approve-btn waves-effect waves-light btn green", onClick --> backend.onApprove(netId), "Approve")
+              a(cls := "reject-btn waves-effect waves-light btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
+              a(cls := "approve-btn waves-effect waves-light btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
             )
           )
         )
@@ -124,7 +152,7 @@ object ApprovalJS {
       .initialState(new State(insts))
       .backend(new HeaderBackend(_))
       .renderS(($, s) =>
-        ul(cls := "collapsible", Attr("data-collapsible") := "accordion",
+        ul(cls := "collapsible", Attr("data-collapsible") := "expandable",
           s.items.map(inst => accHeader((inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email, $.backend)))
         )
       )

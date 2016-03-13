@@ -1,6 +1,17 @@
 @import "components/_color"
+@import "components/_variables"
 
 html
 
   body
     background-color: #F9F9F9
+
+    #toast-container
+      @media #{$large-and-up}
+        top: inherit !important
+        left: 20%
+        bottom: 5%
+        max-width: 80%
+
+        .toast
+          float: left
