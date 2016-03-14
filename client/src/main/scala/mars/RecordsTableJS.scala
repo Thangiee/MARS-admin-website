@@ -57,9 +57,14 @@ object RecordsTableJS {
     // delete btn in delete dialog
     $(document).on("click", "#delete-record-btn", (e: Event) => {
       val id = $(e.target).data("id").toString
-      //todo: call delete on backend via REST API
-//      Dynamic.global.$(e.target).closest("a").tooltip("remove")
-//      $(e.target).closest("tr").empty()
+      MarsApi.deleteRecord(id).fold(
+        err  => toast(s"Unable to delete record due to ${err.msg}"),
+        succ => {
+          Dynamic.global.$(e.target).closest("a").tooltip("remove")
+          $(e.target).closest("tr").empty()
+          toast("Record deleted")
+        }
+      )
     })
   }
 
