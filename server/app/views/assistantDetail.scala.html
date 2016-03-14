@@ -27,60 +27,7 @@
 
     @* right side *@
     <div class="col s12 l4">
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title"><b>@fullName</b></span>
-          <br><br>
-          <span>E-MAIL</span><span class="right"><b>@{asst.email}</b></span><br><br>
-          <span>NET ID</span><span class="right"><b>@{asst.netId}</b></span><br><br>
-          <span>EMPLOYEE ID</span><span class="right"><b>@{asst.employeeId}</b></span><br><br>
-          <span>PAY RATE</span><span class="right"><b>$@{f"${asst.rate}%.2f/hr"}</b></span><br><br>
-          <span>JOB</span><span class="right"><b>@{asst.job}</b></span><br><br>
-          <span>DEPARTMENT</span><span class="right"><b>@{asst.department}</b></span><br><br>
-          <span>TITLE</span><span class="right"><b>@{asst.title}</b></span><br><br>
-          <span>TITLE CODE</span><span class="right"><b>@{asst.titleCode}</b></span><br><br>
-          <span>THRESHOLD</span><span class="right"><b>@{asst.threshold}</b></span><br><br>
-
-          <div class="card-action no-padding">
-            @* this btn opens the edit info dialog below on click *@
-            <a id="edit-info-btn" class="modal-trigger waves-effect btn-flat orange-text darken-3" href="#edit-info-dialog">Edit Info</a>
-
-            <div id="edit-info-dialog" class="modal modal-fixed-footer">
-              @helper.form(action = routes.Assistants.update(asst.netId)) {
-                <div class="modal-content">
-                  <h4>Edit @fullName Info</h4>
-                  @formField(name = "email", label = "Email", value = asst.email, _type = "email")
-                  @formField(name = "emp-id", label = "Employee Id", value = asst.employeeId)
-                  @formField(name = "pay-rate", label = "Pay Rate ($/Hr)", value = asst.rate, _type = "number")
-                  @formField(name = "dept", label = "Department", value = asst.department)
-                  @formField(name = "title", label = "Title", value = asst.title)
-                  @formField(name = "code", label = "Title Code", value = asst.titleCode)
-                  @if(asst.job.toLowerCase == "teaching") {
-                    <p><input name="job" type="radio" id="job1" value="teaching" checked /><label for="job1">Teaching</label></p>
-                    <p><input name="job" type="radio" id="job2" value="grading"/><label for="job2">Grading</label></p>
-                  } else {
-                    <p><input name="job" type="radio" id="job1" value="teaching" /><label for="job1">Teaching</label></p>
-                    <p><input name="job" type="radio" id="job2" value="grading" checked/><label for="job2">Grading</label></p>
-                  }
-
-                  <div class="row" >
-                    <h6 class="col s3 no-padding">Face Recognition Threshold</h6>
-                    <p class="range-field col s9 tooltipped no-padding" data-position="top" data-tooltip="Lowering this value to makes it easier to clock in/out and vise versa. Default is 0.4">
-                      <input type="range" name="thres" min="0" max="1" step="0.01" value="@asst.threshold"/>
-                    </p>
-                  </div>
-                </div>
-
-                <div class="modal-footer">
-                  <button id="update-info-btn" href="#!" type="submit" class="modal-action modal-close waves-effect blue-text btn-flat">
-                    Update
-                  </button>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="info-card" class="card">@* to be render by mars.AssistantInfoJS()*@</div>
 
       <div class="card">
         <div class="card-content">
@@ -117,8 +64,6 @@
 
   <script>
     $(document).ready(function(){
-      $('.modal-trigger').leanModal();
-      $('#job-select').material_select();
       $("#toolbar").sticky({topSpacing:0});
     });
 
@@ -131,5 +76,6 @@
     });
 
     mars.RecordsTableJS().init("@asst.netId");
+    mars.AssistantInfoJS().init("@asst.netId");
   </script>
 }

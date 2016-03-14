@@ -17,11 +17,18 @@ object MarsApi {
 
   def allAssistant: Response[Seq[Assistant]] = call(GET(s"/api/assistant/all")).map(read[Seq[Assistant]](_))
 
+  def asstByNetId(id: String): Response[Assistant] = call(GET(s"/api/assistant/$id")).map(read[Assistant](_))
+
   def allInstructor: Response[Seq[Instructor]] = call(GET(s"/api/instructor/all")).map(read[Seq[Instructor]](_))
 
   def approveAcc(netId: String): Response[Unit] = call(POST(s"/api/account/$netId/approve")).map(_ => ())
 
   def deleteAcc(netId: String): Response[Unit] = call(DELETE(s"/api/account/$netId")).map(_ => ())
+
+  def updateAsst(asst: Assistant): Response[Unit] = call(POST(s"/api/assistant/${asst.netId}/update", params =
+    "email" -> asst.email, "emp-id" -> asst.employeeId, "pay-rate" -> asst.rate, "job" -> asst.job,
+    "dept" -> asst.department, "title" -> asst.title, "code" -> asst.titleCode, "thres" -> asst.threshold
+  )).map(_ => ())
 
   private def GET(route: String)(implicit ex: ExecutionContext) = Ajax.get(route, timeout = 10000) // 10 sec timeout
 
