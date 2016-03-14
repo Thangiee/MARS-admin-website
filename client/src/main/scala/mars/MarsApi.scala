@@ -12,23 +12,38 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object MarsApi {
 
-  def records(netId: String, filterOption: String): Response[Seq[Record]] =
-    call(GET(s"/api/records/$netId/$filterOption")).map(read[Seq[Record]](_))
-
-  def allAssistant: Response[Seq[Assistant]] = call(GET(s"/api/assistant/all")).map(read[Seq[Assistant]](_))
-
-  def asstByNetId(id: String): Response[Assistant] = call(GET(s"/api/assistant/$id")).map(read[Assistant](_))
-
-  def allInstructor: Response[Seq[Instructor]] = call(GET(s"/api/instructor/all")).map(read[Seq[Instructor]](_))
+  def changePasswd(netId: String, newPass: String): Response[Unit] =
+    call(POST(s"/api/account/$netId/change-pass", "new-passwd" -> newPass)).map(_ => ())
 
   def approveAcc(netId: String): Response[Unit] = call(POST(s"/api/account/$netId/approve")).map(_ => ())
 
   def deleteAcc(netId: String): Response[Unit] = call(DELETE(s"/api/account/$netId")).map(_ => ())
 
+  def allAssistant: Response[Seq[Assistant]] = call(GET(s"/api/assistant/all")).map(read[Seq[Assistant]](_))
+
+  def asstByNetId(id: String): Response[Assistant] = call(GET(s"/api/assistant/$id")).map(read[Assistant](_))
+
   def updateAsst(asst: Assistant): Response[Unit] = call(POST(s"/api/assistant/${asst.netId}/update", params =
     "email" -> asst.email, "emp-id" -> asst.employeeId, "pay-rate" -> asst.rate, "job" -> asst.job,
     "dept" -> asst.department, "title" -> asst.title, "code" -> asst.titleCode, "thres" -> asst.threshold
   )).map(_ => ())
+
+  def faceImg(netId: String): Response[Seq[FaceImg]] = call(GET(s"/api/face-img/$netId")).map(read[Seq[FaceImg]](_))
+
+  def deleteFaceImg(imgId: String): Response[Unit] = call(DELETE(s"/api/face-img/$imgId")).map(_ => ())
+
+  def allInstructor: Response[Seq[Instructor]] = call(GET(s"/api/instructor/all")).map(read[Seq[Instructor]](_))
+
+  def changeInstRole(netId: String, isAdmin: Boolean): Response[Unit] =
+    call(POST(s"/api/instructor/$netId/change-role", "is-admin" -> isAdmin)).map(_ => ())
+
+  def records(netId: String, filterOption: String): Response[Seq[Record]] =
+    call(GET(s"/api/records/$netId/$filterOption")).map(read[Seq[Record]](_))
+
+  def updateRecord(id: String, inTime: Long, inLoc: String, outTime: Long, outLoc: String): Response[Unit] =
+    call(POST(s"/api/record/$id/update", "in-time" -> inTime, "in-loc" -> inLoc, "out-time" -> outTime, "out-loc" -> outLoc)).map(_ => ())
+
+  def deleteRecord(id: String): Response[Unit] = call(DELETE(s"/api/record/$id")).map(_ => ())
 
   private def GET(route: String)(implicit ex: ExecutionContext) = Ajax.get(route, timeout = 10000) // 10 sec timeout
 

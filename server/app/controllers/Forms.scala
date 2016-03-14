@@ -38,9 +38,9 @@ object Forms {
   val updateRecord = Form(
     mapping(
       "in-time" -> longNumber,
-      "inLoc"   -> text,
-      "outTime" -> longNumber,
-      "outLoc"  -> text
+      "in-loc"   -> text,
+      "out-time" -> longNumber,
+      "out-loc"  -> text
     )(UpdateRecord.apply)(UpdateRecord.unapply).verifying("In time must be before out time.", r => r.inTime <= r.outTime)
   )
 

@@ -18,6 +18,8 @@ package object mars {
 
   case class Record(id: String, netId: String, inTime: String, outTime: String, inLoc: String, outLoc: String)
 
+  case class FaceImg(id: String, url: String)
+
   case class Assistant(
     netId: String,
     username: String,
