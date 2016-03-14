@@ -6,14 +6,11 @@ import org.scalajs.dom.ext.{Ajax, AjaxException}
 import org.scalajs.dom.raw.XMLHttpRequest
 import upickle.default._
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.collection.immutable.Map
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 object MarsApi {
-
-  def GET(route: String)(implicit ex: ExecutionContext) = Ajax.get(route, timeout = 10000) // 10 sec timeout
-  def POST(route: String, params: Map[String, String] = Map.empty)(implicit ex: ExecutionContext) = Ajax.post(route, write(params), timeout = 10000)
-  def DELETE(route: String)(implicit ex: ExecutionContext) = Ajax.delete(route, timeout = 10000)
 
   def records(netId: String, filterOption: String): Response[Seq[Record]] =
     call(GET(s"/api/records/$netId/$filterOption")).map(read[Seq[Record]](_))
@@ -26,15 +23,22 @@ object MarsApi {
 
   def deleteAcc(netId: String): Response[Unit] = call(DELETE(s"/api/account/$netId")).map(_ => ())
 
-  protected def call(request: Future[XMLHttpRequest])(implicit ex: ExecutionContext): XorF[Error, String] = {
-    XorT(request.map(response =>
-      response.status match {
-        case 200  => Xor.Right(response.responseText)
-        case code => Xor.Left(Error(code, s"$code: ${response.responseText}"))
-      }
-    ) recover {
-      case e: AjaxException => e.printStackTrace(); Xor.Left(Error(404, "unable to connect to the server"))
-      case e: Exception     => e.printStackTrace(); Xor.Left(Error(500, "Internal Service Error"))
-    })
+  private def GET(route: String)(implicit ex: ExecutionContext) = Ajax.get(route, timeout = 10000) // 10 sec timeout
+
+  private def DELETE(route: String)(implicit ex: ExecutionContext) = Ajax.delete(route, timeout = 10000)
+
+  private def POST(route: String, params: (String, Any)*)(implicit ex: ExecutionContext) = Ajax.post(route,
+    params.map{case (k,v) => s"$k=$v"}.mkString("&"),
+    headers = Map("Content-Type" -> "application/x-www-form-urlencoded"),
+    timeout = 10000
+  )
+
+  private def call(request: Future[XMLHttpRequest])(implicit ex: ExecutionContext): XorF[Error, String] = {
+    XorT(request
+      .map(response => Xor.Right(response.responseText))
+      .recover {
+        case e: AjaxException => println(s"${e.xhr.statusText}: ${e.xhr.responseText}"); Xor.Left(Error(e.xhr.status, e.xhr.statusText))
+        case e: Exception     => e.printStackTrace(); Xor.Left(Error(500, "unexpected error (view console log for more details)"))
+      })
   }
 }

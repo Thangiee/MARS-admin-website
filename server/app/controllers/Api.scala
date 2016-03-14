@@ -3,6 +3,7 @@ package controllers
 import cats.std.all._
 import com.github.nscala_time.time.Imports._
 import models._
+import play.api.data.Form
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.mvc._
@@ -21,7 +22,7 @@ class Api() extends Controller {
 
   def changePasswd(netId: String) = Action.async { implicit request =>
     Forms.changePasswd.bindFromRequest().fold(
-      formErr => Future.successful(BadRequest(formErr.globalErrors.mkString("\n"))),
+      formErr => Future.successful(BadRequest(formErrMsg(formErr))),
       newPass => toResult(Account.changePasswd(netId, newPass))
     )
   }
@@ -36,7 +37,7 @@ class Api() extends Controller {
 
   def updateAssistant(netId: String) = Action.async { implicit request =>
     Forms.updateAsst.bindFromRequest().fold(
-      formErr => Future.successful(BadRequest(formErr.globalErrors.mkString("\n"))),
+      formErr => Future.successful(BadRequest(formErrMsg(formErr))),
       data    => toResult(Assistant.update(netId, data.payRate, data.dept, data.title, data.code, data.thres))
     )
   }
@@ -59,7 +60,7 @@ class Api() extends Controller {
 
   def changeInstructorRole(netId: String) = Action.async { implicit request =>
     Forms.changeInstructorRole.bindFromRequest().fold(
-      formErr => Future.successful(BadRequest(formErr.globalErrors.mkString("\n"))),
+      formErr => Future.successful(BadRequest(formErrMsg(formErr))),
       isAdmin => toResult(Instructor.changeRole(netId, isAdmin))
     )
   }
@@ -85,7 +86,7 @@ class Api() extends Controller {
 
   def updateRecord(id: String) = Action.async { implicit request =>
     Forms.updateRecord.bindFromRequest().fold(
-      formErr => Future.successful(BadRequest(formErr.globalErrors.mkString("\n"))),
+      formErr => Future.successful(BadRequest(formErrMsg(formErr))),
       record  => toResult(Record.update(id, record.inTime, record.outTime, record.inLoc, record.outLoc))
     )
   }
@@ -99,4 +100,9 @@ class Api() extends Controller {
   private def toJsonResult[W: Writes](response: Response[W]) = response.fold(err => err.toStatusCode, data => Ok(Json.toJson(data)))
 
   private def formatTime(ms: Long): String = DateTimeFormat.forPattern("MM/dd/YY h:mm a").print(ms)
+
+  private def formErrMsg[A](form: Form[A]): String = form.globalErrors.toList match {
+    case Nil    => form.errors.map(f => s"${f.key} ${f.message}").mkString(", ")
+    case errors => errors.mkString(", ")
+  }
 }
