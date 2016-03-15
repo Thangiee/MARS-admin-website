@@ -4,8 +4,8 @@
 @instMenuItems = @{
   Seq(
     ("Dashboard", "dashboard", routes.Home.page()),
-    ("Assistants", "face"), routes.Assistants.page(),
-    ("Logout", "exit_to_app", routes.Application.index())
+    ("Assistants", "face", routes.Assistants.page()),
+    ("Logout", "exit_to_app", routes.Application.logout())
   )
 }
 
