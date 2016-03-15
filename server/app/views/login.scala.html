@@ -1,5 +1,5 @@
 @import views.html.materials.matInput
-@(loginForm: Form[Tuple2[String, String]])(implicit msg: Messages)
+@(loginForm: Form[Tuple2[String, String]])(implicit msg: Messages, flash: Flash)
 
 @loginErr = @{
   loginForm("auth-err").errors.map(_.messages.mkString(", ")).mkString(", ")
@@ -38,6 +38,13 @@
           timeout: 5000
         }).appendTo("#login-snackbar-container")
       });
+    }
+
+    @flash.get("toast").map { msg =>
+      $.snackbar({
+        content: "@msg",
+        timeout: 7000
+      }).appendTo("#login-snackbar-container");
     }
 
     // validate username and password login form fields

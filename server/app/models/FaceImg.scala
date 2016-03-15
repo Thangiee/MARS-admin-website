@@ -3,8 +3,6 @@ package models
 import cats.std.all._
 import play.api.libs.json._
 
-import scala.concurrent.ExecutionContext
-
 case class FaceImg(id: String, url: String)
 
 object FaceImg {

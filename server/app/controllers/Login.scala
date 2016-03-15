@@ -12,7 +12,7 @@ import scala.concurrent.Future
 
 class Login @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
-  def page = Action {
+  def page = Action { implicit request =>
     Ok(views.html.login(Forms.login))
   }
 
@@ -22,7 +22,7 @@ class Login @Inject()(val messagesApi: MessagesApi) extends Controller with I18n
       formData => {
         val (user, passwd) = formData
         Account.authenticate(user, passwd).fold(
-          error => Status(error.code)(views.html.login(Forms.login.withError("auth-err", error.msg))),
+          error => Status(error.code)(views.html.login(Forms.login.fill(formData).withError("auth-err", error.msg))),
           succ  => {
             val (cookies, acc) = succ
             if (acc.role == "admin" || acc.role == "instructor")

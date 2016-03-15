@@ -4,6 +4,7 @@ import java.net.HttpCookie
 
 import cats.data.{Xor, XorT}
 import cats.std.all._
+import controllers.Forms.CreateAcc
 import play.api.libs.json._
 
 import scala.concurrent.Future
@@ -35,4 +36,10 @@ object Account {
 
   def changePasswd(netId: String, newPass: String)(implicit req: Request, ec: ExeCtx): Response[Unit] =
     call(POST(s"/account/change-password/$netId").postForm.param("new_password", newPass)).map(_ => ())
+
+  def create(form: CreateAcc)(implicit req: Request, ec: ExeCtx): Response[Unit] =
+    call(POST("/account/instructor").postForm.params(
+      "net_id" -> form.netId, "user" -> form.username, "pass" -> form.passwd,
+      "email" -> form.email, "first" -> form.firstName, "last" -> form.lastName)
+    ).map(_ => ())
 }
