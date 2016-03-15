@@ -17,8 +17,7 @@ class Assistants @Inject()(val messagesApi: MessagesApi) extends Controller with
     Assistant.all().fold(
       err   => Redirect(routes.Login.page()).withNewSession,
       assts => {
-        // todo: filter out non approved assistants
-        val asstsJsValue = Json.toJson(assts.map(a =>
+        val asstsJsValue = Json.toJson(assts.filter(_.approve).map(a =>
           Map("fullName" -> s"${a.firstName} ${a.lastName}", "netId" -> a.netId, "email" -> a.email, "job" -> a.job)
         ))
         Ok(views.html.assistants(Json.stringify(asstsJsValue)))
