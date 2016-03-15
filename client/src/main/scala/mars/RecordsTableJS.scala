@@ -51,7 +51,6 @@ object RecordsTableJS {
         err  => toast(s"Unable to update record due to ${err.msg}"),
         succ => {
           val filter = $("#current-filter").data("value").toString
-          println("current>>>" + filter)
           renderTable(netId, filter)
           toast("Record updated")
         }
