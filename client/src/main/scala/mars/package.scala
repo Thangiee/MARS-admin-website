@@ -10,9 +10,9 @@ package object mars {
   type XorF[L, R] = XorT[Future, L, R]
   case class Error(code: Int, msg: String)
 
-  def toastCB(text: String, duration: Int = 5000): Callback = Callback(Dynamic.global.Materialize.toast(text, duration))
+  def toastCB(text: String, duration: Int = 7000): Callback = Callback(Dynamic.global.Materialize.toast(text, duration))
 
-  def toast(text: String, duration: Int = 5000): Unit = Dynamic.global.Materialize.toast(text, duration)
+  def toast(text: String, duration: Int = 7000): Unit = Dynamic.global.Materialize.toast(text, duration)
 
   implicit def FutureToCallback[A](f: Future[Callback])(implicit ec: ExecutionContext): Callback = Callback.future(f)
 
