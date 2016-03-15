@@ -43,24 +43,14 @@ class Assistants @Inject()(val messagesApi: MessagesApi) extends Controller with
     )
   }
 
-  def update(netId: String) = Action.async { implicit request =>
-    //todo:
-    Forms.updateAsst.bindFromRequest().fold(
-      err  => Future.successful(???),
-      data => {
-        println(data)
-        Future.successful(Redirect(routes.Assistants.detail(netId)))
-      }
-    )
-  }
-
   def deleteFace(netId: String) = Action.async { implicit request =>
-    // todo:
     Forms.deleteFace.bindFromRequest().fold(
-      err  => Future.successful(???),
-      data => {
-        println(data)
-        Future.successful(Redirect(routes.Assistants.detail(netId)))
+      err   => Future.successful(Redirect(routes.Assistants.detail(netId)).flashing("toast" -> "Unable to delete face due to form error.")),
+      imgId => {
+        FaceImg.delete(imgId).fold(
+          err  => Redirect(routes.Assistants.detail(netId)).flashing("toast" -> s"Unable to delete face due to unexpected error."),
+          succ => Redirect(routes.Assistants.detail(netId)).flashing("toast" -> "Face image removed")
+        )
       }
     )
   }

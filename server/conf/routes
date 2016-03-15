@@ -14,8 +14,6 @@ GET           /assistants                                  controllers.Assistant
 
 GET           /assistants/detail/:netId                    controllers.Assistants.detail(netId: String)
 
-POST          /assistants/detail/:netId/update             controllers.Assistants.update(netId: String)
-
 POST          /assistants/detail/:netId/delete-face        controllers.Assistants.deleteFace(netId: String)
 
 GET           /approval                                    controllers.Approval.page

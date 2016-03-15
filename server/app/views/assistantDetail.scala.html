@@ -1,5 +1,5 @@
 @import models.Request
-@(asst: Assistant, faceImgUrls: Seq[String])(implicit req: Request, msg: Messages)
+@(asst: Assistant, faceImgUrls: Seq[String])(implicit req: Request, msg: Messages, flash: Flash)
 
 @fullName = @{s"${asst.firstName.capitalize} ${asst.lastName.capitalize}"}
 
@@ -44,6 +44,7 @@
           </div>
 
           <div id="confirm-del-face-dialog" class="modal">
+            @*todo: maybe, move to client side*@
             @helper.form(action = routes.Assistants.deleteFace(asst.netId)) {
               <div class="modal-content">
                 <h4>Delete Face</h4>
@@ -77,5 +78,7 @@
 
     mars.RecordsTableJS().init("@asst.netId");
     mars.AssistantInfoJS().init("@asst.netId");
+
+    @flash.get("toast").map { msg => Materialize.toast('@msg', 5000); }
   </script>
 }
