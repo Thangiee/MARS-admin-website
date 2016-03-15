@@ -46,6 +46,16 @@ object RecordsTableJS {
       val moment = Dynamic.global.moment
       val inMillis  = moment(inTime, timeFormat).valueOf().toString.toLong
       val outMillis = moment(outTime, timeFormat).valueOf().toString.toLong
+
+      MarsApi.updateRecord(id, inMillis, inLoc, outMillis, outLoc).fold(
+        err  => toast(s"Unable to update record due to ${err.msg}"),
+        succ => {
+          val filter = $("#current-filter").data("value").toString
+          println("current>>>" + filter)
+          renderTable(netId, filter)
+          toast("Record updated")
+        }
+      )
     })
 
     // delete icon
@@ -83,7 +93,7 @@ object RecordsTableJS {
       div(`class`:="card-content",
         span(`class`:="card-title",
           b("Clock In/Out Records"),
-          a(`class`:="dropdown-button btn-flat right", href:="#", data("activates"):="dropdown1",
+          a(id:="current-filter", `class`:="dropdown-button btn-flat right", href:="#", data("activates"):="dropdown1", data.value:=currentFilter,
             currentFilter,
             i(`class`:="material-icons right", "filter_list")
           ),
