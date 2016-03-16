@@ -34,4 +34,5 @@ class SignUp @Inject()(val messagesApi: MessagesApi) extends Controller with I18
       }
     )
   }
+
 }
