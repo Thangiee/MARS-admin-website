@@ -1,0 +1,22 @@
+@(title: String, subTitle: String)
+
+@main("Oops", "sass/error_page.min.css") {
+
+  <div class="valign-wrapper">
+    <div class="row">
+      <h3 class="s12 center">@title</h3>
+      <h5 class="s12 center">@subTitle</h5>
+      <br>
+      <div class="s12 center">
+        <a class="waves-effect btn-flat blue-text" onclick="goBack()">Back</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+
+}

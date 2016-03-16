@@ -36,10 +36,7 @@ class Assistants @Inject()(val messagesApi: MessagesApi) extends Controller with
       views.html.assistantDetail(asst, faces.map(_.url))
     }
 
-    res.fold(
-      err  => ???, // todo: 404 page
-      page => Ok(page)
-    )
+    res.fold(err  => err.toHtmlPage, page => Ok(page))
   }
 
   def deleteFace(netId: String) = Action.async { implicit request =>

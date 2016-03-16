@@ -12,7 +12,7 @@ class AccountsMngt @Inject()(val messagesApi: MessagesApi) extends Controller wi
 
   def page = Action.async { implicit request =>
     Account.current().fold(
-      err => ???, // todo:
+      err => err.toHtmlPage,
       acc => Ok(views.html.accountsMngt(acc))
     )
   }
