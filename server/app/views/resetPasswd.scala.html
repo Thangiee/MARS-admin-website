@@ -1,0 +1,39 @@
+@import views.html.materials.matInput
+@import models.Request
+
+@(token: String, form: Form[String])(implicit req: Request, msg: Messages)
+
+@main("Reset Password", "sass/error_page.min.css") {
+
+  <div class="valign-wrapper">
+    <div class="row">
+    @helper.form(action = routes.PasswdRecovery.resetPassword(token), 'id -> "form", 'class -> "center-align") {
+      <h4>
+        Enter your new password.
+      </h4>
+      <br/>
+      <div class="s12 center">
+        @matInput(form("new-passwd"), '_label -> "New password")
+        <br/>
+        <button class="waves-effect waves-light btn blue" type="submit">Save</button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      $('#form').validate({
+        rules: {
+          'new-passwd': {
+            required: true,
+            nowhitespace: true,
+            minlength: 6
+          }
+        },
+        errorElement: "em",
+        errorClass: "red-text"
+      })
+    });
+  </script>
+}

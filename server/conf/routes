@@ -26,6 +26,14 @@ POST          /signup/create                               controllers.SignUp.cr
 
 GET           /logout                                      controllers.Application.logout
 
+GET           /forgot-password                             controllers.PasswdRecovery.forgotPasswordPage
+
+POST          /forgot-password/submit                      controllers.PasswdRecovery.emailPasswordReset
+
+GET           /password-reset                              controllers.PasswdRecovery.passwordResetPage(token: String)
+
+POST          /password-reset/submit                       controllers.PasswdRecovery.resetPassword(token: String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                controllers.Assets.at(path="/public", file)
 

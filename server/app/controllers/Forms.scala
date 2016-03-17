@@ -53,7 +53,9 @@ object Forms {
     )
   )
 
-  val changePasswd = Form("new-passwd" -> nonEmptyText)
+  val emailPasswdReset = Form("net-id" -> nonEmptyText)
+
+  val changePasswd = Form("new-passwd" -> nonEmptyText(minLength = 6).verifying("Can't have space", !_.contains(" ")))
 
   val changeInstructorRole = Form("is-admin" -> boolean)
 }

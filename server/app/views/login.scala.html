@@ -15,8 +15,13 @@
 
         <br/>
         @helper.form(action = routes.Login.auth(), 'id -> "login-form") {
-          @matInput(loginForm("login-user"), '_label -> "Username")
-          @matInput(loginForm("login-passwd"), '_label -> "Password", 'type -> "password")
+          <div class="row">
+            @matInput(loginForm("login-user"), '_label -> "Username")
+            @matInput(loginForm("login-passwd"), '_label -> "Password", 'type -> "password")
+            <div class="col s12">
+              <a href="@routes.PasswdRecovery.forgotPasswordPage()">Forgot password?</a>
+            </div>
+          </div>
 
           <div class="form-group">
             <button id="login" class="waves-effect waves-light btn blue" type="submit">Login</button>

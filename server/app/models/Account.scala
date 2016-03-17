@@ -37,6 +37,23 @@ object Account {
   def changePasswd(netId: String, newPass: String)(implicit req: Request, ec: ExeCtx): Response[Unit] =
     call(POST(s"/account/change-password/$netId").postForm.param("new_password", newPass)).map(_ => ())
 
+  def resetPasswd(token: String, newPass: String)(implicit req: Request, ec: ExeCtx): Response[Unit] =
+    call(POST(s"/token/change-password").postForm.params("new_pass" -> newPass, "token" -> token)).map(_ => ())
+
+  def emailPasswdReset(netId: String)(implicit req: Request, ec: ExeCtx): Response[Unit] = {
+    val email =
+      s"""
+         |We received a request to reset the password associated with this e-mail address. If you made this request, please follow the instructions below.
+         |Click the link below to reset your password:
+         |
+         |http://localhost:9000/password-reset?token=<token>
+         |
+         |If you did not request to have your password reset you can safely ignore this email.
+        """.stripMargin
+    println(netId, email)
+    call(POST(s"/email/password-reset").postForm.params("net_id" -> netId, "email_body" -> email)).map(_ => ())
+  }
+
   def create(form: CreateAcc)(implicit req: Request, ec: ExeCtx): Response[Unit] =
     call(POST("/account/instructor").postForm.params(
       "net_id" -> form.netId, "user" -> form.username, "pass" -> form.passwd,
