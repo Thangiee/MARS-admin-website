@@ -1,7 +1,7 @@
 package mars
 
 import cats.std.all._
-import org.scalajs.dom._
+import org.scalajs.dom.{Event, document}
 import org.scalajs.jquery._
 
 import scala.language.postfixOps
@@ -9,7 +9,6 @@ import scala.scalajs.js.Dynamic
 import scala.scalajs.js.annotation.JSExport
 import scalatags.Text.TypedTag
 import scalatags.Text.all._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @JSExport
@@ -75,15 +74,34 @@ object RecordsTableJS {
         }
       )
     })
+
+    // email icon
+    $(document).on("click", "#email-icon", (e: Event) => {
+      Dynamic.global.$("#email-dialog").openModal()
+    })
+
+    // send time sheet btn
+    $(document).on("click", "#ts-send-btn", (e: Event) => {
+      val year  = $("select[name=ts-year]").`val`().toString.toInt
+      val month = $("select[name=ts-month]").`val`().toString.toInt
+      val isFirstHalf = $("select[name=ts-half-month]").`val`().toString.toBoolean
+
+      MarsApi.emailTimeSheet(netId, year, month, isFirstHalf).fold(
+        err  => toast(s"Unable to send time sheet due to ${err.msg}"),
+        succ => toast("Time sheet sent. It may take up to a few minutes to arrive.")
+      )
+    })
   }
 
   private def renderTable(netId: String, filterOption: String): Unit = {
     MarsApi.records(netId, filterOption).map { records =>
       $("#record-table-container").empty().append(recordsTable(records, filterOption).render)
+
       // init Js libraries stuff
       Dynamic.global.$(".dropdown-button").dropdown()
       $(document).ready(Dynamic.global.$(".tooltipped").tooltip())
       Dynamic.global.$(".date-time-picker").bootstrapMaterialDatePicker(Dynamic.literal(format = timeFormat, shortTime = true))
+      Dynamic.global.$("select[name^=ts]").material_select()
     }
   }
 
@@ -101,7 +119,11 @@ object RecordsTableJS {
             li(a( id:="filter", data.value:="month", href:="#!","month")),
             li(a( id:="filter", data.value:="year", href:="#!","year")),
             li(a( id:="filter", data.value:="all", href:="#!","all"))
-          )
+          ),
+          a(id:="email-icon", `class`:="btn-flat right tooltipped", href:="#", data.position := "left", data.delay := "50", data.tooltip := "E-mail Time Sheet",
+            i(`class`:="material-icons", "email")
+          ),
+          emailTimeSheetDialog()
         ),
 
         table(`class`:="striped responsive-table",
@@ -184,6 +206,60 @@ object RecordsTableJS {
       ),
       div(cls:="modal-footer",
         a(id:="delete-record-btn", data.id:=record.id, href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Delete"),
+        a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
+      )
+    )
+  }
+
+  private def emailTimeSheetDialog(): TypedTag[String] = {
+    val now = Dynamic.global.moment()
+    val (y, m, d) = (now.year().toString.toInt, now.month().toString.toInt, now.date().toString.toInt)
+    val years = y.to(y - 5, -1)
+    val months = Seq("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+
+    div(id:="email-dialog", cls:="modal modal-fixed-footer",
+      div(cls:="modal-content",
+        h4("E-mail Time Sheet"),
+        p("test"),
+        div(cls:="row",
+          div(id:="year", cls:="input-field col s12 l4",
+            select(name:="ts-year",
+              option( value:="", disabled, "Year"),
+              years.map {
+                case year if year == y => option(value:=s"$year", selected, year)
+                case year              => option(value:=s"$year", year)
+              }
+            )
+          ),
+          div(id:="month", cls:="input-field col s12 l4",
+            select(name:="ts-month",
+              option( value:="", disabled, "Month"),
+              months.zipWithIndex.map {
+                case (month, index) if index == m => option(value:=s"${index+1}", selected, month)
+                case (month, index)               => option(value:=s"${index+1}", month)
+              }
+            )
+          ),
+          div(id:="half-month", cls:="input-field col s12 l4",
+            select(name:="ts-half-month",
+              option( value:="", disabled, "Half-month"),
+              if (d < 16) {
+                Seq(
+                  option(value:="first", "First half (1 - 15)", selected),
+                  option(value:="second", "Second half (16 - end of month)")
+                )
+              } else {
+                Seq(
+                  option(value:="true", "First half (1 - 15)"),
+                  option(value:="false", "Second half (16 - end of month)", selected)
+                )
+              }
+            )
+          )
+        )
+      ),
+      div(cls:="modal-footer",
+        a(id:="ts-send-btn", href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Send"),
         a(href:="#!", cls:="modal-action modal-close waves-effect btn-flat blue-text", "Cancel")
       )
     )

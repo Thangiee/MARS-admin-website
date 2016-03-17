@@ -45,6 +45,9 @@ object MarsApi {
 
   def deleteRecord(id: String): Response[Unit] = call(DELETE(s"/api/record/$id")).map(_ => ())
 
+  def emailTimeSheet(netId: String, year: Int, month: Int, isFirstHalf: Boolean): Response[Unit] =
+    call(GET(s"/api/timesheet/$netId?y=$year&m=$month&firstHalf=$isFirstHalf")).map(_ => ())
+
   private def GET(route: String)(implicit ex: ExecutionContext) = Ajax.get(route, timeout = 10000) // 10 sec timeout
 
   private def DELETE(route: String)(implicit ex: ExecutionContext) = Ajax.delete(route, timeout = 10000)

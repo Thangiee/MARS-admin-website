@@ -93,6 +93,10 @@ class Api() extends Controller {
 
   def deleteRecord(id: String) = Action.async(implicit request => toResult(Record.delete(id)))
 
+  def emailTimeSheet(netId: String, year: Int, month: Int, isFirstHalf: Boolean) = Action.async { implicit request =>
+    toResult(Record.timeSheet(netId, year, month, isFirstHalf))
+  }
+
   // ----------------
 
   private def toResult[A](response: Response[A]): Future[Result] = response.fold(err => err.toStatusCode, succ => Ok)

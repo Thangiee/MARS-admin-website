@@ -64,4 +64,4 @@ POST          /api/record/:id/update                       controllers.Api.updat
 
 DELETE        /api/record/:id                              controllers.Api.deleteRecord(id: String)
 
-# todo: timesheet routes
+GET           /api/timesheet/:netId                        controllers.Api.emailTimeSheet(netId: String, y: Int, m: Int, firstHalf: Boolean)
