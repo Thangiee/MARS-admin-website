@@ -1,7 +1,38 @@
 @import models.Request
-@()(implicit req: Request, msg: Messages)
+@import com.github.nscala_time.time.Imports._
+@(payPeriodInfo: PayPeriodInfo)(implicit req: Request, msg: Messages)
+
+@printDate(ms: Long) = {
+  <p class="flow-text">
+    @DateTimeFormat.forPattern("MM/dd/YY").print(ms)
+  </p>
+}
 
 @mainWithNav("Home", "Dashboard", "sass/dashboard.min.css") {
+
+  <div class="card">
+    <div class="card-content">
+      <span class="card-title"><b>This Pay Period Dates</b></span>
+      <table>
+        <thead>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Due Date</th>
+            <th>Pay Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>@printDate(payPeriodInfo.start)</th>
+            <th>@printDate(payPeriodInfo.end)</th>
+            <th>@printDate(payPeriodInfo.due)</th>
+            <th>@printDate(payPeriodInfo.pay)</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <div id="react-current-clock-in"></div>
 
