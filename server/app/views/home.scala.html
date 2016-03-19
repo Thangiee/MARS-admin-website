@@ -1,6 +1,11 @@
 @import models.Request
 @()(implicit req: Request, msg: Messages)
 
-@mainWithNav("Home", "Dashboard") {
+@mainWithNav("Home", "Dashboard", "sass/dashboard.min.css") {
 
+  <div id="react-current-clock-in"></div>
+
+  <script>
+    mars.CurrentClockInJS().init()
+  </script>
 }
