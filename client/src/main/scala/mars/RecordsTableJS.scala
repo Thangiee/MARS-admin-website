@@ -95,7 +95,8 @@ object RecordsTableJS {
 
   private def renderTable(netId: String, filterOption: String): Unit = {
     MarsApi.records(netId, filterOption).map { records =>
-      $("#record-table-container").empty().append(recordsTable(records, filterOption).render)
+      val completeRecord = records.filter(_.outTime.nonEmpty) // only show records that have been clocked out
+      $("#record-table-container").empty().append(recordsTable(completeRecord, filterOption).render)
 
       // init Js libraries stuff
       Dynamic.global.$(".dropdown-button").dropdown()
