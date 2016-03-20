@@ -16,7 +16,7 @@ object CurrentClockInJS {
 
   @JSExport
   def init(wsToken: String): Unit = {
-    val url = s"ws://192.168.1.230:8080/ws/current-clock-in-assts-tracker/$wsToken" //todo: change to server url
+    val url = s"ws://52.33.35.165:8080/ws/current-clock-in-assts-tracker/$wsToken"
 
     case class State(ws: Option[WebSocket], assts: Vector[ClockInAsst], now: Double)
 
