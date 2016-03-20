@@ -13,11 +13,13 @@ class Home @Inject()(val messagesApi: MessagesApi) extends Controller with I18nS
 
   def page() = Action.async { implicit request =>
 
+    val fetchToken = webSocketToken()
     val fetchAssts = Assistant.all()
     val fetchRecords = Record.all()
     val fetchPPInfo = PayPeriodInfo.current()
 
     val res = for {
+      token   <- fetchToken
       info    <- fetchPPInfo
       assts   <- fetchAssts.map(_.filter(_.approve))
       records <- fetchRecords.map(_.filter(r => r.outTime.isDefined && r.inTime >= info.start))
@@ -26,12 +28,19 @@ class Home @Inject()(val messagesApi: MessagesApi) extends Controller with I18nS
         val totalTime = records.view.filter(_.netId == asst.netId).map(r => r.outTime.get - r.inTime).sum
         TotalClockInTime(s"${asst.firstName.capitalize} ${asst.lastName.capitalize}", totalTime.toDouble / 1.hour.millis)
       }
-      (info, times)
+      (token, info, times)
     }
 
     res.fold(
-      err => err.toHtmlPage,
-      data => Ok(views.html.home(data._1, data._2.sortBy(_.totalHrs)(Ordering[Double].reverse).take(30))) // top 30 highest total hrs
+      err => {
+        println(err)
+        err.toHtmlPage
+      },
+      data => {
+        val (token, info, asstsTime) = data
+        val topAsstsTimes = asstsTime.sortBy(_.totalHrs)(Ordering[Double].reverse).take(30) // top 30 highest total hrs
+        Ok(views.html.home(token, info, topAsstsTimes))
+      }
     )
   }
 

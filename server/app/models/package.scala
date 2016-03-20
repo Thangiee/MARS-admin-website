@@ -1,6 +1,7 @@
 import java.net.HttpCookie
 
 import cats.data.{Xor, XorT}
+import cats.std.all._
 import play.api.libs.json._
 import play.api.mvc.AnyContent
 
@@ -17,6 +18,9 @@ package object models {
   type Response[R] = XorF[Error, R]
 
   case class Error(code: Int, msg: String)
+
+  def webSocketToken()(implicit req: Request, ex: ExeCtx): Response[String] =
+    call(GET("/web-socket-token")).map(js => (js \ "token").as[String])
 
   private val baseUrl = "http://52.33.35.165:8080/api"
   private def httpMethod(route: String, method: String) = Http(baseUrl + route).timeout(10000, 10000).method(method)

@@ -1,7 +1,7 @@
 @import models.Request
 @import com.github.nscala_time.time.Imports._
 
-@(payPeriodInfo: PayPeriodInfo, totalTimes: Seq[TotalClockInTime])(implicit req: Request, msg: Messages)
+@(wsToken: String, payPeriodInfo: PayPeriodInfo, totalTimes: Seq[TotalClockInTime])(implicit req: Request, msg: Messages)
 
 @printDate(ms: Long) = {
   <p class="flow-text">
@@ -44,7 +44,7 @@
   <div id="react-current-clock-in"></div>
 
   <script>
-    mars.CurrentClockInJS().init();
+    mars.CurrentClockInJS().init('@wsToken');
 
     $(function () {
       $('#chart').highcharts({
