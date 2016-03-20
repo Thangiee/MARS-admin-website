@@ -8,7 +8,7 @@ GET           /login                                       controllers.Login.pag
 
 POST          /login/auth                                  controllers.Login.auth
 
-GET           /home                                        controllers.Home.page
+GET           /dashboard                                   controllers.Dashboard.page
 
 GET           /assistants                                  controllers.Assistants.page
 

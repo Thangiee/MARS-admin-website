@@ -12,7 +12,7 @@ class Application() extends Controller {
       err  => Redirect(routes.Login.page()).withNewSession,
       inst => {
         val data = request.session.data ++ Seq("role" -> inst.role, "full_name" -> s"${inst.firstName} ${inst.lastName}", "email" -> inst.email)
-        Redirect(routes.Home.page()).withSession(request.session.copy(data))
+        Redirect(routes.Dashboard.page()).withSession(request.session.copy(data))
       }
     )
   }

@@ -9,7 +9,7 @@ import models._
 import com.github.nscala_time.time.Imports._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-class Home @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
+class Dashboard @Inject()(val messagesApi: MessagesApi) extends Controller with I18nSupport {
 
   def page() = Action.async { implicit request =>
 
@@ -39,7 +39,7 @@ class Home @Inject()(val messagesApi: MessagesApi) extends Controller with I18nS
       data => {
         val (token, info, asstsTime) = data
         val topAsstsTimes = asstsTime.sortBy(_.totalHrs)(Ordering[Double].reverse).take(30) // top 30 highest total hrs
-        Ok(views.html.home(token, info, topAsstsTimes))
+        Ok(views.html.dashboard(token, info, topAsstsTimes))
       }
     )
   }
