@@ -1,6 +1,7 @@
 @import models.Request
 @import com.github.nscala_time.time.Imports._
-@(payPeriodInfo: PayPeriodInfo)(implicit req: Request, msg: Messages)
+
+@(payPeriodInfo: PayPeriodInfo, totalTimes: Seq[TotalClockInTime])(implicit req: Request, msg: Messages)
 
 @printDate(ms: Long) = {
   <p class="flow-text">
@@ -34,9 +35,69 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-content">
+      <div id="chart"></div>
+    </div>
+  </div>
+
   <div id="react-current-clock-in"></div>
 
   <script>
-    mars.CurrentClockInJS().init()
+    mars.CurrentClockInJS().init();
+
+    $(function () {
+      $('#chart').highcharts({
+        chart: {
+          type: 'column'
+        },
+        title: {
+          text: 'Assistants Total Clocked in Hours for This Pay Period'
+        },
+        subtitle: {
+          text: 'Top 30'
+        },
+        xAxis: {
+          type: 'category',
+          labels: {
+            rotation: -45,
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        },
+        yAxis: {
+          min: 0,
+          title: {
+            text: 'Hours'
+          }
+        },
+        legend: {
+          enabled: false
+        },
+        tooltip: {
+          pointFormat: 'This pay period: <b>{point.y:.1f} Hrs.</b>'
+        },
+        series: [{
+          name: 'Total Hours',
+          data: [
+            @Html(totalTimes.map(x => s"['${x.name}', ${x.totalHrs}]").mkString(","))
+          ],
+          dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y:.1f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+              fontSize: '13px',
+              fontFamily: 'Verdana, sans-serif'
+            }
+          }
+        }]
+      });
+    });
   </script>
 }

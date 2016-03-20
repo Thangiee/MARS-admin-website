@@ -13,6 +13,7 @@ lazy val server = (project in file("server")).settings(
     "org.webjars" % "jquery" % "2.2.0",
     "org.webjars" % "bootstrap" % "3.3.6",
     "org.webjars" % "jquery-validation" % "1.14.0-1",
+    "org.webjars" % "highcharts" % "4.2.3",
     "org.webjars.bower" % "bootstrap-material-datetimepicker" % "2.5.3",
     "org.typelevel" %% "cats" % "0.4.1",
     "org.scalaj" %% "scalaj-http" % "2.1.0",
