@@ -19,10 +19,7 @@ lazy val server = (project in file("server")).settings(
     "org.scalaj" %% "scalaj-http" % "2.1.0",
     "com.github.nscala-time" %% "nscala-time" % "2.6.0",
     specs2 % Test
-  ),
-  // Heroku specific
-  herokuAppName in Compile := "your-heroku-app-name",
-  herokuSkipSubProjects in Compile := false
+  )
 ).enablePlugins(PlayScala).
   aggregate(clients.map(projectToRef): _*).
   dependsOn(sharedJvm)
