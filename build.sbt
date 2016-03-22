@@ -4,6 +4,8 @@ lazy val clients = Seq(client)
 lazy val scalaV = "2.11.7"
 
 lazy val server = (project in file("server")).settings(
+  name := "MARS-admin-website",
+  version := "1.0.0",
   scalaVersion := scalaV,
   scalaJSProjects := clients,
   pipelineStages := Seq(scalaJSProd, gzip),
@@ -11,14 +13,12 @@ lazy val server = (project in file("server")).settings(
   libraryDependencies ++= Seq(
     "com.vmunier" %% "play-scalajs-scripts" % "0.4.0",
     "org.webjars" % "jquery" % "2.2.0",
-    "org.webjars" % "bootstrap" % "3.3.6",
     "org.webjars" % "jquery-validation" % "1.14.0-1",
     "org.webjars" % "highcharts" % "4.2.3",
     "org.webjars.bower" % "bootstrap-material-datetimepicker" % "2.5.3",
     "org.typelevel" %% "cats" % "0.4.1",
     "org.scalaj" %% "scalaj-http" % "2.1.0",
-    "com.github.nscala-time" %% "nscala-time" % "2.6.0",
-    specs2 % Test
+    "com.github.nscala-time" %% "nscala-time" % "2.6.0"
   )
 ).enablePlugins(PlayScala).
   aggregate(clients.map(projectToRef): _*).
