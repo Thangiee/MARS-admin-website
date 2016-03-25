@@ -85,7 +85,7 @@ object CurrentClockInJS {
 
           def onMessage(e: MessageEvent): Unit = {
             val msg = e.data.toString
-            if (msg.nonEmpty) direct.modState(_.copy(assts = read[Vector[ClockInAsst]](msg)))
+            if (msg.nonEmpty) direct.modState(_.copy(assts = read[Vector[ClockInAsst]](msg), accumulator = 0))
           }
 
           def onerror(e: ErrorEvent): Unit = {
