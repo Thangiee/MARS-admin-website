@@ -62,7 +62,7 @@ object MarsApi {
     XorT(request
       .map(response => Xor.Right(response.responseText))
       .recover {
-        case e: AjaxException => println(s"${e.xhr.statusText}: ${e.xhr.responseText}"); Xor.Left(Error(e.xhr.status, e.xhr.statusText))
+        case e: AjaxException => Xor.Left(Error(e.xhr.status, s"${e.xhr.statusText}: ${e.xhr.responseText}"))
         case e: Exception     => e.printStackTrace(); Xor.Left(Error(500, "unexpected error (view console log for more details)"))
       })
   }

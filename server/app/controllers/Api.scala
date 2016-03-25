@@ -107,6 +107,6 @@ class Api() extends Controller {
 
   private def formErrMsg[A](form: Form[A]): String = form.globalErrors.toList match {
     case Nil    => form.errors.map(f => s"${f.key} ${f.message}").mkString(", ")
-    case errors => errors.mkString(", ")
+    case errors => errors.map(_.message).mkString(", ")
   }
 }
