@@ -6,19 +6,18 @@ import org.scalajs.dom._
 import upickle.default._
 
 import scala.scalajs.js
-import scala.scalajs.js.Dynamic
 import scala.scalajs.js.annotation.JSExport
 
 @JSExport
 object CurrentClockInJS {
 
-  case class ClockInAsst(netId: String, imgId: String, fName: String, lName: String, inTime: Double, inLoc: String)
+  case class ClockInAsst(netId: String, imgId: String, fName: String, lName: String, duration: Int, inLoc: String)
 
   @JSExport
   def init(wsToken: String): Unit = {
     val url = s"ws://52.33.35.165:8080/ws/current-clock-in-assts-tracker/$wsToken"
 
-    case class State(ws: Option[WebSocket], assts: Vector[ClockInAsst], now: Double)
+    case class State(ws: Option[WebSocket], assts: Vector[ClockInAsst], accumulator: Int)
 
     class Backend($: BackendScope[Unit, State]) {
       def render(state: State) = {
@@ -39,10 +38,10 @@ object CurrentClockInJS {
               ),
               tbody(
                 state.assts.map { asst =>
-                  val duration = Dynamic.global.moment.duration(state.now - asst.inTime)
-                  val h = duration.asHours().toString.takeWhile(_ != '.')
-                  val m = duration.minutes().toString.toInt
-                  val s = duration.seconds().toString.toInt
+                  val duration = asst.duration + state.accumulator
+                  val h = duration / 3600
+                  val m = (duration / 60) % 60
+                  val s = duration % 60
                   tr(id:="clock-in-asst-row",
                     td(cls:="valign-wrapper",
                       asst.imgId match {
@@ -66,7 +65,7 @@ object CurrentClockInJS {
         )
       }
 
-      def tick = $.modState(s => s.copy(now = System.currentTimeMillis))
+      def tick = $.modState(s => s.copy(accumulator = s.accumulator + 1))
 
       def start: Callback = {
 
@@ -123,7 +122,7 @@ object CurrentClockInJS {
     }
 
     val WebSocketsApp = ReactComponentB[Unit]("WebSocketsApp")
-      .initialState(State(None, Vector.empty, System.currentTimeMillis))
+      .initialState(State(None, Vector.empty, 0))
       .renderBackend[Backend]
       .componentDidMount(_.backend.start)
       .componentWillUnmount(_.backend.end)
