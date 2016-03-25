@@ -45,7 +45,10 @@ object CurrentClockInJS {
                   val s = duration.seconds().toString.toInt
                   tr(id:="clock-in-asst-row",
                     td(cls:="valign-wrapper",
-                      img(src:=asst.imgId+"?size=48", cls:="circle"),
+                      asst.imgId match {
+                        case ""     => i(cls := "material-icons profile", "account_circle")
+                        case imgUrl => img(src := imgUrl + "?size=48", cls := "circle")
+                      },
                       p(s"${asst.fName.capitalize} ${asst.lName.capitalize}", cls:="valign flow-text")
                     ),
                     td(p(cls:="flow-text", f"${h}h $m%02dm $s%02ds")),
