@@ -27,20 +27,20 @@ object AccMngtJS {
     }
 
     def handleDeleteAcc(netId: String)(e: ReactEventI): Callback = {
-      MarsApi.deleteAcc(netId).fold(
-        err  => toastCB("Unable to delete account due to " + err.msg),
-        succ => {
-          if (!jQuery(e.target).hasClass("disabled")) {
+      if (jQuery(e.target).hasClass("disabled")) {
+        Callback.empty
+      } else {
+        MarsApi.deleteAcc(netId).fold(
+          err  => toastCB("Unable to delete account due to " + err.msg),
+          succ => {
             jQuery("input[name='delete']").value("") // fix bug: input propagate to next item after
-            jQuery(e.target).addClass("disabled")    //          deleting current item
+            jQuery(e.target).addClass("disabled") //          deleting current item
             $.modState(s => s.copy(s.assts.filterNot(_.netId == netId),
-                                   s.insts.filterNot(_.netId == netId),
-                                   s.admins.filterNot(_.netId == netId))).map(_ => toast("Account deleted"))
-          } else {
-            Callback.empty
+                            s.insts.filterNot(_.netId == netId),
+                            s.admins.filterNot(_.netId == netId))).map(_ => toast("Account deleted"))
           }
-        }
-      )
+        )
+      }
     }
 
     def handleChangeRole(acc: Instructor)(e: ReactEventI): Callback = {
