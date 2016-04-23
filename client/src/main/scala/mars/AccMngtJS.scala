@@ -170,9 +170,9 @@ object AccMngtJS {
         val app = ReactComponentB[Unit]("acc mngt")
           .initialState(State(assts, insts, admins))
           .renderBackend[Backend]
-          .build
+          .buildU
 
-        ReactDOM.render(app(""), document.getElementById("react"))
+        ReactDOM.render(app(), document.getElementById("react"))
         Dynamic.global.$(".profile").initial(Dynamic.literal(height=46, width=46, charCount=2, fontSize=20))
         Dynamic.global.$(".collapsible").collapsible()
         Dynamic.global.$("ul.tabs").tabs()

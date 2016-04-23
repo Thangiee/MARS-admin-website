@@ -106,8 +106,8 @@ object AssistantInfoJS {
     val infoCard = ReactComponentB[Unit]("info card")
       .initialState(asst)
       .renderBackend[Backend]
-      .build
+      .buildU
 
-    ReactDOM.render(infoCard(""), document.getElementById("info-card"))
+    ReactDOM.render(infoCard(), document.getElementById("info-card"))
   }
 }

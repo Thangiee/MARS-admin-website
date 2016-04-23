@@ -65,7 +65,7 @@ object ApprovalJS {
               h6(cls := "col", netId, br, fullName, br, email)
             ),
             div(cls := "secondary-content",
-              a(cls := "reject-btn waves-effect waves-light btn red fuck", onClick ==> backend.onReject(netId, fullName), "Reject"),
+              a(cls := "reject-btn waves-effect waves-light btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
               a(cls := "approve-btn waves-effect waves-light btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
             )
           )
@@ -96,7 +96,7 @@ object ApprovalJS {
       }
       .build
 
-    val asstsList = ReactComponentB[Unit]("HelloMessage")
+    val app = ReactComponentB[Unit]("assts list")
       .initialState(new State(assts))
       .backend(new HeaderBackend(_))
       .renderS(($, s) =>
@@ -104,9 +104,9 @@ object ApprovalJS {
           s.items.map(asst => asstRow((asst, $.backend)))
         )
       )
-      .build
+      .buildU
 
-    ReactDOM.render(asstsList("assts"), document.getElementById("tab1"))
+    ReactDOM.render(app(), document.getElementById("tab1"))
   }
 
   private def renderInstsTab(insts: Seq[Instructor]): Unit = {
@@ -148,7 +148,7 @@ object ApprovalJS {
       }
       .build
 
-    val instsList = ReactComponentB[Unit]("HelloMessage")
+    val app = ReactComponentB[Unit]("approval list")
       .initialState(new State(insts))
       .backend(new HeaderBackend(_))
       .renderS(($, s) =>
@@ -156,9 +156,9 @@ object ApprovalJS {
           s.items.map(inst => accHeader((inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email, $.backend)))
         )
       )
-      .build
+      .buildU
 
-    ReactDOM.render(instsList("insts"), document.getElementById("tab2"))
+    ReactDOM.render(app(), document.getElementById("tab2"))
   }
 
 }
