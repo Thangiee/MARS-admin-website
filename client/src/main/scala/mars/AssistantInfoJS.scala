@@ -4,6 +4,7 @@ import cats.std.all._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.{Attr, ReactTagOf}
 import japgolly.scalajs.react.vdom.all._
+import mars.components.Materialize._
 import org.scalajs.dom.document
 import org.scalajs.dom.html.Div
 import org.scalajs.jquery.jQuery
@@ -56,46 +57,45 @@ object AssistantInfoJS {
         val isTeaching = asst.job.toLowerCase == "teaching"
         val fullName = s"${asst.firstName.capitalize} ${asst.lastName.capitalize}"
 
-        div(cls := "card-content",
-          span(cls := "card-title", b(fullName)),
-          br(), br(),
-          span("E-MAIL"), span(cls := "right", b(asst.email)), br(), br(),
-          span("NET ID"), span(cls := "right", b(asst.netId)), br(), br(),
-          span("EMPLOYEE ID"), span(cls := "right", b(asst.employeeId)), br(), br(),
-          span("PAY RATE"), span(cls := "right", b(asst.rate)), br(), br(),
-          span("JOB"), span(cls := "right", b(asst.job)), br(), br(),
-          span("DEPARTMENT"), span(cls := "right", b(asst.department)), br(), br(),
-          span("TITLE"), span(cls := "right", b(asst.title)), br(), br(),
-          span("TITLE CODE"), span(cls := "right", b(asst.titleCode)), br(), br(),
-          span("THRESHOLD"), span(cls := "right", b(asst.threshold)), br(), br(),
+        def lineItem(title: String, value: String) = Seq(span(title), span(cls := "right", b(value)), br(), br())
 
-          div(cls := "card-action no-padding",
-            a(id := "edit-info-btn", cls := "modal-trigger waves-effect btn-flat orange-text darken-3", href := "#edit-info-dialog", "Edit Info"),
+        cardContent(
+          cardTitle(b(fullName)), br(), br(),
+          lineItem("E-MAIL", asst.email),
+          lineItem("NET ID", asst.netId),
+          lineItem("EMPLOYEE ID", asst.employeeId),
+          lineItem("PAY RATE", asst.rate.toString),
+          lineItem("JOB", asst.job),
+          lineItem("DEPARTMENT", asst.department),
+          lineItem("TITLE", asst.title),
+          lineItem("TITLE CODE", asst.titleCode),
+          lineItem("THRESHOLD", asst.threshold.toString),
 
-            div(id := "edit-info-dialog", cls := "modal modal-fixed-footer",
-              div(cls := "modal-content",
+          cardAction(noPadding,
+            flatBtn(id := "edit-info-btn", cls := "modal-trigger orange-text darken-3", href := "#edit-info-dialog", "Edit Info"),
+
+            modal(id := "edit-info-dialog", fixedFooter,
+              modalContent(
                 h4(s"Edit $fullName Info"),
                 form(
-                formField(_name = "email", _label = "Email", _value = asst.email, _type = "email"),
-                formField(_name = "emp-id", _label = "Employee Id", _value = asst.employeeId),
-                formField(_name = "pay-rate", _label = "Pay Rate ($/Hr)", _value = asst.rate, _type = "number"),
-                formField(_name = "dept", _label = "Department", _value = asst.department),
-                formField(_name = "title", _label = "Title", _value = asst.title),
-                formField(_name = "code", _label = "Title Code", _value = asst.titleCode),
-                p(input(name := "job", tpe := "radio", id := "job1", defaultValue := "teaching", Attr("defaultChecked") := isTeaching), label(`for` := "job1", "Teaching")),
-                p(input(name := "job", tpe := "radio", id := "job2", defaultValue := "grading", Attr("defaultChecked") := !isTeaching), label(`for` := "job2", "Grading")),
-                div(cls := "row",
-                  h6(cls := "col s3 no-padding", "Face Recognition Threshold"),
-                  p(cls := "range-field col s9 tooltipped no-padding", Attr("data-position") := "top", Attr("data-tooltip") := "Lowering this value to makes it easier to clock in/out and vise versa. Default is 0.4",
-                    input(tpe := "range", id:= "thres", name := "thres", min := "0", max := "1", step := "0.01", defaultValue := asst.threshold)
+                  formField(_name = "email", _label = "Email", _value = asst.email, _type = "email"),
+                  formField(_name = "emp-id", _label = "Employee Id", _value = asst.employeeId),
+                  formField(_name = "pay-rate", _label = "Pay Rate ($/Hr)", _value = asst.rate, _type = "number"),
+                  formField(_name = "dept", _label = "Department", _value = asst.department),
+                  formField(_name = "title", _label = "Title", _value = asst.title),
+                  formField(_name = "code", _label = "Title Code", _value = asst.titleCode),
+                  p(radio(isTeaching, "teaching", name := "job", id := "job1"), label(`for` := "job1", "Teaching")),
+                  p(radio(!isTeaching, "grading", name := "job", id := "job2"), label(`for` := "job2", "Grading")),
+                  row(
+                    h6(colm(3), noPadding, "Face Recognition Threshold"),
+                    p(colm(9), noPadding, cls := "range-field", tooltip("top", "Lowering this value to makes it easier to clock in/out and vise versa. Default is 0.4"),
+                      input(tpe := "range", id:= "thres", name := "thres", min := "0", max := "1", step := "0.01", defaultValue := asst.threshold)
+                    )
                   )
                 )
-                )
               ),
-              div(cls := "modal-footer",
-                button(id := "update-info-btn", href := "#!", tpe := "submit", cls := "modal-action modal-close waves-effect blue-text btn-flat",
-                  onClick --> onSubmit(asst), "Update"
-                )
+              modalFooter(
+                submitBtn(id := "update-info-btn", cls := "modal-action modal-close blue-text btn-flat", onClick --> onSubmit(asst), "Update")
               )
             )
           )

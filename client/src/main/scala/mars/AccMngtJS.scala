@@ -7,6 +7,7 @@ import japgolly.scalajs.react.vdom.all._
 import org.scalajs.dom.document
 import org.scalajs.jquery.jQuery
 import org.scalajs.dom.html.Div
+import mars.components.Materialize._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js.Dynamic
@@ -34,7 +35,7 @@ object AccMngtJS {
           err  => toastCB("Unable to delete account due to " + err.msg),
           succ => {
             jQuery("input[name='delete']").value("") // fix bug: input propagate to next item after
-            jQuery(e.target).addClass("disabled") //          deleting current item
+            jQuery(e.target).addClass("disabled")    //          deleting current item
             $.modState(s => s.copy(s.assts.filterNot(_.netId == netId),
                             s.insts.filterNot(_.netId == netId),
                             s.admins.filterNot(_.netId == netId))).map(_ => toast("Account deleted"))
@@ -54,8 +55,8 @@ object AccMngtJS {
     }
 
     def header(netId: String, fullName: String, email: String): ReactTagOf[Div] = {
-      div(cls := "collapsible-header",
-        div(cls := "row",
+      collapsibleHeader(
+        row(
           div(
             img(cls := "profile circle col", Attr("data-name") := fullName.split(" ").map(_.head.toString).reduce(_ + _)),
             h6(cls := "col", s"Net Id: $netId", br(), fullName, br(), email)
@@ -85,9 +86,9 @@ object AccMngtJS {
         ("Employee Id: " + asst.employeeId, "Title: " + asst.title),
         ("Title Code: " + asst.titleCode, "")
       ).map { case (l, r) =>
-        div(cls := "row",
-          p(cls := "col s6 center-align", l),
-          p(cls := "col s6 center-align", r)
+        row(
+          p(colm(6), centerAlign, l),
+          p(colm(6), centerAlign, r)
         )
       }
 
@@ -95,7 +96,7 @@ object AccMngtJS {
     }
 
     def content(netId: String, tag: ReactTag): ReactTagOf[Div] = {
-      div(cls := "collapsible-body",
+      collapsibleBody(
         div(id := "action-container",
           tag,
           div(cls := "divider"),
@@ -112,17 +113,17 @@ object AccMngtJS {
     }
 
     def render(s: State): ReactTagOf[Div] = {
-      div(cls := "row",
-        div(cls := "col s12 ",
-          ul(cls := "tabs",
-            li(cls := "tab col s4", a(href := "#tab1", "Assistants")),
-            li(cls := "tab col s4", a(href := "#tab2", "Instructors")),
-            li(cls := "tab col s4", a(href := "#tab3", "Admins"))
+      row(
+        div(colm(12),
+          tabs(
+            tab(colm(4), a(href := "#tab1", "Assistants")),
+            tab(colm(4), a(href := "#tab2", "Instructors")),
+            tab(colm(4), a(href := "#tab3", "Admins"))
           )
         ),
 
-        div(id := "tab1", cls := "col s12",
-          ul(cls := "collapsible", Attr("data-collapsible") := "accordion",
+        div(id := "tab1", colm(12),
+          collapsible(accordion,
             s.assts.map(asst => li(
               header(asst.netId, s"${asst.firstName} ${asst.lastName}", asst.email),
               asstsContent(asst)
@@ -130,8 +131,8 @@ object AccMngtJS {
           )
         ),
 
-        div(id := "tab2", cls := "col s12",
-          ul(cls := "collapsible", Attr("data-collapsible") := "accordion",
+        div(id := "tab2", colm(12),
+          collapsible(accordion,
             s.insts.map(inst => li(
               header(inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email),
               instContent(inst)
@@ -139,8 +140,8 @@ object AccMngtJS {
           )
         ),
 
-        div(id := "tab3", cls := "col s12",
-          ul(cls := "collapsible", Attr("data-collapsible") := "accordion",
+        div(id := "tab3", colm(12),
+          collapsible(accordion,
             s.admins.map(admin => li(
               header(admin.netId, s"${admin.firstName} ${admin.lastName}", admin.email),
               instContent(admin)

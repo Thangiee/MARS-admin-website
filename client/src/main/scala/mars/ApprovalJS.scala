@@ -6,6 +6,7 @@ import japgolly.scalajs.react.vdom.Attr
 import japgolly.scalajs.react.vdom.all._
 import org.scalajs.dom._
 import org.scalajs.jquery.jQuery
+import mars.components.Materialize._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js.Dynamic
@@ -58,15 +59,15 @@ object ApprovalJS {
 
     val accHeader = ReactComponentB[(String, String, String, HeaderBackend)]("header")
       .render_P { case (netId , fullName, email, backend) =>
-        div(cls := "collapsible-header",
-          div(cls := "row",
+        collapsibleHeader(
+          row(
             div(
               img(cls := "profile circle col", Attr("data-name") := fullName.split(" ").map(_.head.toString).reduce(_ + _)),
               h6(cls := "col", netId, br, fullName, br, email)
             ),
-            div(cls := "secondary-content",
-              a(cls := "reject-btn waves-effect waves-light btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
-              a(cls := "approve-btn waves-effect waves-light btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
+            secondaryContent(
+              raisedBtn(cls := "reject-btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
+              raisedBtn(cls := "approve-btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
             )
           )
         )
@@ -84,9 +85,9 @@ object ApprovalJS {
 
         li(
           accHeader((asst.netId, s"${asst.firstName} ${asst.lastName}", asst.email, backend)),
-          div(cls := "collapsible-body",
+          collapsibleBody(
             for ((l, r) <- items) yield {
-              div(cls := "row",
+              row(
                 p(cls := "col s6 center-align", l),
                 p(cls := "col s6 center-align", r)
               )
@@ -133,15 +134,15 @@ object ApprovalJS {
 
     val accHeader = ReactComponentB[(String, String, String, HeaderBackend)]("header")
       .render_P { case (netId , fullName, email, backend) =>
-        div(cls := "collapsible-header",
-          div(cls := "row",
+        collapsibleHeader(
+          row(
             div(
               img(cls := "profile circle col", Attr("data-name") := fullName.split(" ").map(_.head.toString).reduce(_ + _)),
               h6(cls := "col", netId, br, fullName, br, email)
             ),
-            div(cls := "secondary-content",
-              a(cls := "reject-btn waves-effect waves-light btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
-              a(cls := "approve-btn waves-effect waves-light btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
+            secondaryContent(
+              raisedBtn(cls := "reject-btn red", onClick ==> backend.onReject(netId, fullName), "Reject"),
+              raisedBtn(cls := "approve-btn green", onClick ==> backend.onApprove(netId, fullName), "Approve")
             )
           )
         )
@@ -152,7 +153,7 @@ object ApprovalJS {
       .initialState(new State(insts))
       .backend(new HeaderBackend(_))
       .renderS(($, s) =>
-        ul(cls := "collapsible", Attr("data-collapsible") := "expandable",
+        collapsible(Attr("data-collapsible") := "expandable",
           s.items.map(inst => accHeader((inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email, $.backend)))
         )
       )
