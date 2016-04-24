@@ -14,7 +14,8 @@ object Materialize {
   val noPadding    : ClassNameAttr[String] = cls := "no-padding"
   val fixedFooter  : ClassNameAttr[String] = cls := "modal-fixed-footer"
 
-  val accordion: TagMod = Attr("data-collapsible") := "accordion"
+  val accordion : TagMod = Attr("data-collapsible") := "accordion"
+  val expandable: TagMod = Attr("data-collapsible") := "expandable"
 
   val tooltip: (String, String) => Seq[TagMod] =
     (p: String, s: String) => Seq(cls := "tooltipped", position(p), Attr("data-tooltip") := s)

@@ -20,6 +20,17 @@ package object mars {
 
   case class FaceImg(id: String, url: String)
 
+  abstract class Account {
+    def netId: String
+    def username: String
+    def role: String
+    def createTime: Double
+    def approve: Boolean
+    def email: String
+    def lastName: String
+    def firstName: String
+  }
+
   case class Assistant(
     netId: String,
     username: String,
@@ -36,7 +47,7 @@ package object mars {
     title: String,
     titleCode: String,
     threshold: Double
-  )
+  ) extends Account
 
   case class Instructor(
     netId: String,
@@ -47,5 +58,5 @@ package object mars {
     email: String,
     lastName: String,
     firstName: String
-  )
+  ) extends Account
 }

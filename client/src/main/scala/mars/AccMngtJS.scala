@@ -8,6 +8,7 @@ import org.scalajs.dom.document
 import org.scalajs.jquery.jQuery
 import org.scalajs.dom.html.Div
 import mars.components.Materialize._
+import mars.components.Custom._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js.Dynamic
@@ -51,17 +52,6 @@ object AccMngtJS {
       MarsApi.changeInstRole(acc.netId, isAdmin).fold(
         err  => toastCB("Unable to change role due to " + err.msg),
         succ => toastCB(s"${acc.firstName} ${acc.lastName} has been $msg")
-      )
-    }
-
-    def header(netId: String, fullName: String, email: String): ReactTagOf[Div] = {
-      collapsibleHeader(
-        row(
-          div(
-            img(cls := "profile circle col", Attr("data-name") := fullName.split(" ").map(_.head.toString).reduce(_ + _)),
-            h6(cls := "col", s"Net Id: $netId", br(), fullName, br(), email)
-          )
-        )
       )
     }
 
@@ -123,30 +113,15 @@ object AccMngtJS {
         ),
 
         div(id := "tab1", colm(12),
-          collapsible(accordion,
-            s.assts.map(asst => li(
-              header(asst.netId, s"${asst.firstName} ${asst.lastName}", asst.email),
-              asstsContent(asst)
-            ))
-          )
+          collapsible(accordion, s.assts.map(asst => li(accHeader(asst), asstsContent(asst))))
         ),
 
         div(id := "tab2", colm(12),
-          collapsible(accordion,
-            s.insts.map(inst => li(
-              header(inst.netId, s"${inst.firstName} ${inst.lastName}", inst.email),
-              instContent(inst)
-            ))
-          )
+          collapsible(accordion, s.insts.map(inst => li(accHeader(inst), instContent(inst))))
         ),
 
         div(id := "tab3", colm(12),
-          collapsible(accordion,
-            s.admins.map(admin => li(
-              header(admin.netId, s"${admin.firstName} ${admin.lastName}", admin.email),
-              instContent(admin)
-            ))
-          )
+          collapsible(accordion, s.admins.map(admin => li(accHeader(admin), instContent(admin))))
         )
       )
     }
