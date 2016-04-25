@@ -1,9 +1,10 @@
 package mars
 
 import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.all._
+import japgolly.scalajs.react.vdom.all.{icon => _, _}
 import org.scalajs.dom._
 import upickle.default._
+import mars.components.Materialize._
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
@@ -21,11 +22,9 @@ object CurrentClockInJS {
 
     class Backend($: BackendScope[Unit, State]) {
       def render(state: State) = {
-        div(`class`:="card",
-          div(`class`:="card-content",
-            span(`class`:="card-title",
-              b("Currently Clock In Assistants")
-            ),
+        card(
+          cardContent(
+            cardTitle(b("Currently Clock In Assistants")),
 
             table(`class`:="highlight",
               thead(
@@ -43,18 +42,18 @@ object CurrentClockInJS {
                   val m = (duration / 60) % 60
                   val s = duration % 60
                   tr(id:="clock-in-asst-row",
-                    td(cls:="valign-wrapper",
+                    td(vAlignWrapper,
                       asst.imgId match {
-                        case ""     => i(cls := "material-icons profile", "account_circle")
+                        case ""     => icon(cls:="profile", "account_circle")
                         case imgUrl => img(src := imgUrl + "?size=48", cls := "circle")
                       },
-                      p(s"${asst.fName.capitalize} ${asst.lName.capitalize}", cls:="valign flow-text")
+                      p(s"${asst.fName.capitalize} ${asst.lName.capitalize}", vAlign, flowText)
                     ),
-                    td(p(cls:="flow-text", f"${h}h $m%02dm $s%02ds")),
-                    td(p(cls:="flow-text", asst.inLoc)),
+                    td(p(flowText, f"${h}h $m%02dm $s%02ds")),
+                    td(p(flowText, asst.inLoc)),
                     td(
                       a(id := "edit-record-icon", cls := "tooltipped", href := s"/assistants/detail/${asst.netId}",
-                        i(cls := "small material-icons", "search")
+                        icon(cls:="small", "search")
                       )
                     )
                   )

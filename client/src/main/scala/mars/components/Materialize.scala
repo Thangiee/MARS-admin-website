@@ -13,6 +13,7 @@ object Materialize {
   val centerAlign  : ClassNameAttr[String] = cls := "center-align"
   val noPadding    : ClassNameAttr[String] = cls := "no-padding"
   val fixedFooter  : ClassNameAttr[String] = cls := "modal-fixed-footer"
+  val flowText     : ClassNameAttr[String] = cls := "flow-text"
 
   val accordion : TagMod = Attr("data-collapsible") := "accordion"
   val expandable: TagMod = Attr("data-collapsible") := "expandable"
