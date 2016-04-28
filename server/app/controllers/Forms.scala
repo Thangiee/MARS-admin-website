@@ -20,10 +20,9 @@ object Forms {
     )(CreateAcc.apply)(CreateAcc.unapply)
   )
 
-  case class UpdateAsst(email: String, empId: String, payRate: Double, job: String, dept: String, title: String, code: String, thres: Double)
+  case class UpdateAsst(empId: String, payRate: Double, job: String, dept: String, title: String, code: String, thres: Double)
   val updateAsst = Form(
     mapping(
-      "email"    -> email,
       "emp-id"   -> nonEmptyText,
       "pay-rate" -> of[Double],
       "job"      -> nonEmptyText,

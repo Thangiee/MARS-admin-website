@@ -38,7 +38,7 @@ class Api() extends Controller {
   def updateAssistant(netId: String) = Action.async { implicit request =>
     Forms.updateAsst.bindFromRequest().fold(
       formErr => Future.successful(BadRequest(formErrMsg(formErr))),
-      data    => toResult(Assistant.update(netId, data.payRate, data.dept, data.title, data.code, data.thres))
+      data    => toResult(Assistant.update(netId, data.empId, data.payRate, data.job, data.dept, data.title, data.code, data.thres))
     )
   }
 

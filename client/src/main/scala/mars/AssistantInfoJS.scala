@@ -38,12 +38,12 @@ object AssistantInfoJS {
 
     class Backend(val $: BackendScope[Unit, Assistant]) {
       def onSubmit(asst: Assistant): Callback = {
-        val List(email, empId, rate, dept, title, code, thres, job) =
-          List("#email", "#emp-id", "#pay-rate", "#dept", "#title", "#code", "#thres", "input[name='job']:checked")
+        val List(empId, rate, dept, title, code, thres, job) =
+          List("#emp-id", "#pay-rate", "#dept", "#title", "#code", "#thres", "input[name='job']:checked")
             .map(selector => jQuery(selector).value().toString)
 
         val updatedAsst = asst.copy(
-          email = email, employeeId = empId, rate = rate.toDouble, department = dept,
+          employeeId = empId, rate = rate.toDouble, department = dept,
           title = title, titleCode = code, job = job, threshold = thres.toDouble
         )
 
@@ -78,7 +78,6 @@ object AssistantInfoJS {
               modalContent(
                 h4(s"Edit $fullName Info"),
                 form(
-                  formField(_name = "email", _label = "Email", _value = asst.email, _type = "email"),
                   formField(_name = "emp-id", _label = "Employee Id", _value = asst.employeeId),
                   formField(_name = "pay-rate", _label = "Pay Rate ($/Hr)", _value = asst.rate, _type = "number"),
                   formField(_name = "dept", _label = "Department", _value = asst.department),
