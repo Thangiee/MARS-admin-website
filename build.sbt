@@ -19,8 +19,36 @@ lazy val server = (project in file("server")).settings(
     "org.typelevel" %% "cats" % "0.4.1",
     "org.scalaj" %% "scalaj-http" % "2.1.0",
     "com.github.nscala-time" %% "nscala-time" % "2.6.0"
+  ),
+
+  // docker settings; run "sbt docker" to generate a docker image and Dockerfile
+  // https://github.com/marcuslonnberg/sbt-docker
+  dockerfile in docker := {
+    val appDir: File = stage.value
+    val targetDir = "/app"
+    val port = 9000
+
+    new Dockerfile {
+      from("thangiee/mars-base:v1")
+      expose(port)
+
+      env("MARS_BACKEND_URL", "http://backend:8080")
+      env("MARS_PLAY_SECRET", "CHANGEME")
+
+      entryPoint(s"$targetDir/bin/${executableScriptName.value}", "-J-server")
+      copy(appDir, targetDir)
+    }
+  },
+
+  imageNames in docker := Seq(
+    ImageName(s"thangiee/${name.value.toLowerCase()}:latest"),
+    ImageName(
+      namespace = Some("thangiee"),
+      repository = name.value.toLowerCase(),
+      tag = Some("v" + version.value)
+    )
   )
-).enablePlugins(PlayScala).
+).enablePlugins(PlayScala, sbtdocker.DockerPlugin, JavaAppPackaging).
   aggregate(clients.map(projectToRef): _*).
   dependsOn(sharedJvm)
 
@@ -51,4 +79,3 @@ lazy val sharedJs = shared.js
 
 // loads the Play project at sbt startup
 onLoad in Global := (Command.process("project server", _: State)) compose (onLoad in Global).value
-

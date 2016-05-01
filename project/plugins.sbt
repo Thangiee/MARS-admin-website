@@ -14,3 +14,5 @@ addSbtPlugin("com.vmunier" % "sbt-play-scalajs" % "0.2.8")
 addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0")
 
 addSbtPlugin("org.madoushi.sbt" % "sbt-sass" % "0.9.3")
+
+addSbtPlugin("se.marcuslonnberg" % "sbt-docker" % "1.3.0")

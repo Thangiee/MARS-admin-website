@@ -2,6 +2,7 @@ import java.net.HttpCookie
 
 import cats.data.{Xor, XorT}
 import cats.std.all._
+import com.typesafe.config.ConfigFactory
 import play.api.libs.json._
 import play.api.mvc.AnyContent
 
@@ -22,7 +23,7 @@ package object models {
   def webSocketToken()(implicit req: Request, ex: ExeCtx): Response[String] =
     call(GET("/web-socket-token")).map(js => (js \ "token").as[String])
 
-  private val baseUrl = "http://52.33.35.165:8080/api"
+  private val baseUrl = ConfigFactory.load().getString("backend.url") + "/api"
   private def httpMethod(route: String, method: String) = Http(baseUrl + route).timeout(10000, 10000).method(method)
   protected[models] def GET(route: String)  = httpMethod(route, "GET")
   protected[models] def POST(route: String) = httpMethod(route, "POST")
