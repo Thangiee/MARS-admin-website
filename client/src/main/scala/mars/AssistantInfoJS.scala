@@ -64,7 +64,7 @@ object AssistantInfoJS {
           lineItem("E-MAIL", asst.email),
           lineItem("NET ID", asst.netId),
           lineItem("EMPLOYEE ID", asst.employeeId),
-          lineItem("PAY RATE", asst.rate.toString),
+          lineItem("PAY RATE ($/Hr)", "$"+f"${asst.rate}%.2f"),
           lineItem("JOB", asst.job),
           lineItem("DEPARTMENT", asst.department),
           lineItem("TITLE", asst.title),
