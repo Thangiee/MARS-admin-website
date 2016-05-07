@@ -5,7 +5,7 @@ lazy val scalaV = "2.11.7"
 
 lazy val server = (project in file("server")).settings(
   name := "MARS-admin-website",
-  version := "1.0.0",
+  version := "1.0.1",
   scalaVersion := scalaV,
   scalaJSProjects := clients,
   pipelineStages := Seq(scalaJSProd, gzip),
